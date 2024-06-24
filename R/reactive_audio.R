@@ -138,11 +138,19 @@ reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
 
             current_item_id <- psychTestR::get_global("current_item_id", state)
 
-            rhythmic_melody <- psychTestR::get_global("rhythmic_melody", state) %>%
-              dplyr::filter(item_id != !! current_item_id)
+            rhythmic_melody <- psychTestR::get_global("rhythmic_melody", state)
 
-            rhythmic_melody_review <- psychTestR::get_global("rhythmic_melody_review", state) %>%
-              dplyr::filter(item_id != !! current_item_id)
+            if(is.data.frame(rhythmic_melody)) {
+              rhythmic_melody <- rhythmic_melody %>%
+                dplyr::filter(item_id != !! current_item_id)
+            }
+
+            rhythmic_melody_review <- psychTestR::get_global("rhythmic_melody_review", state)
+
+            if(is.data.frame(rhythmic_melody_review)) {
+              rhythmic_melody_review <- rhythmic_melody_review %>%
+                dplyr::filter(item_id != !! current_item_id)
+            }
 
             psychTestR::set_global("rhythmic_melody", rhythmic_melody, state)
             psychTestR::set_global("rhythmic_melody_review", rhythmic_melody_review, state)
