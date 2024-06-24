@@ -136,8 +136,6 @@ reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
 
           if(psychTestR::get_global("user_satisfied", state) == "Continue" || psychTestR::get_global("user_satisfied", state) == "Weitermachen") {
 
-            browser()
-
             current_item_id <- psychTestR::get_global("current_item_id", state)
 
             rhythmic_melody <- psychTestR::get_global("rhythmic_melody", state)
