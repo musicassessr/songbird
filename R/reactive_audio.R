@@ -134,7 +134,7 @@ reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
         # Make sure the trial is removed
         psychTestR::code_block(function(state, ...) {
 
-          if(psychTestR::get_global("user_satisfied", state) == "Continue") {
+          if(psychTestR::get_global("user_satisfied", state) == "Continue" || psychTestR::get_global("user_satisfied", state) == "Weitermachen") {
 
             current_item_id <- psychTestR::get_global("current_item_id", state)
 
