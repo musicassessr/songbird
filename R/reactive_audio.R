@@ -97,6 +97,8 @@ reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
           max_goes <- psychTestR::get_global("max_goes", state)
           attempts_left <- psychTestR::get_global("attempts_left", state) - 1L
 
+          cat(file=stderr(), 'lyrics...', tb_row$lyrics, "\n")
+
           musicassessr::present_stimuli(
             stimuli = audio_file_path,
             stimuli_type = "audio",
@@ -255,6 +257,9 @@ audio_file_melodic_production_page <- function(tb_row,
         number_attempts <- psychTestR::get_global("number_attempts", state)
         max_goes <- psychTestR::get_global("max_goes", state)
         attempts_left <- psychTestR::get_global("attempts_left", state) - 1L
+
+        cat(file=stderr(), 'lyrics2...', tb_row$lyrics, "\n")
+
 
         musicassessr::present_stimuli(
           stimuli = audio_file_path,

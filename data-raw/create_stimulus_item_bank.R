@@ -142,6 +142,18 @@ singpause_phrase_item_bank <- singpause_phrase_item_bank %>%
   mutate(item_type = "phrase")
 
 
+# Make sure item ids are formatted correctly for the phrase item bank (add an underscore)
+
+singpause_phrase_item_bank <- singpause_phrase_item_bank %>%
+  rowwise() %>%
+  mutate(item_id = stringr::str_replace(item_id, "singpause_2024_phrase", "singpause_2024_phrase_")) %>%
+  ungroup()
+
+
+
+
+
+
 singpause_item_bank <- rbind(singpause_item_item_bank,
                              singpause_phrase_item_bank)
 
