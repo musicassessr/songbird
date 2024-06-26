@@ -20,6 +20,19 @@ singpause_dict_df <- rbind(singpause_dict_df, insts_table2)
 anyNA(singpause_dict_df)
 
 
+# Join SAA dict
+
+SAA_dict_df <- readxl::read_excel("~/SAA/data-raw/SAA.xlsx")
+
+SAA_dict_df <- SAA_dict_df %>%
+  mutate(de = case_when(is.na(de) ~ en, TRUE ~ de)) %>%
+  dplyr::select(key, en, de)
+
+
+singpause_dict_df <- singpause_dict_df %>%
+  rbind(SAA_dict_df)
+
+
 singpause_dict <- psychTestR::i18n_dict$new(singpause_dict_df)
 
 
