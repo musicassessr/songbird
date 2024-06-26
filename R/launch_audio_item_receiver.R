@@ -39,7 +39,7 @@ launch_audio_item_receiver <- function(max_goes = 3L,
                                          asynchronous_api_mode = TRUE,
                                          css = c("https://musicassessr.com/assets/css/style_songbird.css", system.file("www/css/musicassessr.css", package = 'musicassessr'))),
 
-    final_page = musicassessr::redirect_page(text = "Well done! You will now be redirected back to your dashboard.",
+    final_page = musicassessr::redirect_page(text = psychTestR::i18n("redirect_message"),
                                              ms = 3000,
                                              url = "https://dev.singpause.songbird.training/dashboard/",
                                              final = TRUE),

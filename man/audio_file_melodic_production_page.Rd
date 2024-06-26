@@ -12,8 +12,8 @@ audio_file_melodic_production_page(
   max_goes = 3L,
   attempts_left,
   melody_no,
-  page_title = if (paradigm_type == "simultaneous_recall") "Sing along with the melody"
-    else "Sing back the melody",
+  page_title = if (paradigm_type == "simultaneous_recall")
+    psychTestR::i18n("sing_along_page_title") else psychTestR::i18n("sing_back_message"),
   page_text = shiny::tags$div(id = "singImage", shiny::tags$img(src =
     "https://musicassessr.com/assets/img/singing.png", height = 100, width = 100)),
   user_id = 1L,
@@ -28,8 +28,8 @@ audio_file_melodic_production_page(
   max_goes = 3L,
   attempts_left,
   melody_no,
-  page_title = if (paradigm_type == "simultaneous_recall") "Sing along with the melody"
-    else "Sing back the melody",
+  page_title = if (paradigm_type == "simultaneous_recall")
+    psychTestR::i18n("sing_along_page_title") else psychTestR::i18n("sing_back_message"),
   page_text = shiny::tags$div(id = "singImage", shiny::tags$img(src =
     "https://musicassessr.com/assets/img/singing.png", height = 100, width = 100)),
   user_id = 1L,

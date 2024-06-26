@@ -81,7 +81,7 @@ audio_file_melodic_production_page <- function(tb_row,
                                               max_goes = 3L,
                                               attempts_left,
                                               melody_no,
-                                              page_title = if(paradigm_type == "simultaneous_recall") "Sing along with the melody" else "Sing back the melody",
+                                              page_title = if(paradigm_type == "simultaneous_recall") psychTestR::i18n("sing_along_page_title") else psychTestR::i18n("sing_back_message"),
                                               page_text = shiny::tags$div(
                                                 shiny::tags$img(id = "singImage", src = "https://musicassessr.com/assets/img/singing.png", height = 100, width = 100)
                                               ),
@@ -133,7 +133,8 @@ audio_file_melodic_production_page <- function(tb_row,
             new_items_id = NULL,
             user_id = user_id,
             feedback = TRUE,
-            feedback_type = "opti3"
+            feedback_type = "opti3",
+            trial_paradigm = paradigm_type
           )
         } else NULL
 

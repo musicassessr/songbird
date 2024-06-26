@@ -44,7 +44,7 @@ launch_audio_battery <- function(max_goes = 3L,
                                                  )),
 
 
-    final_page = musicassessr::redirect_page(text = "Well done! You will now be redirected back to your dashboard.",
+    final_page = musicassessr::redirect_page(text = psychTestR::i18n("redirect_message"),
                                              ms = 3000,
                                              url = "https://singpause.songbird.training/dashboard/",
                                              final = TRUE),
