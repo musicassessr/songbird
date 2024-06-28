@@ -3,7 +3,7 @@ name: Deploy Shiny App
 on:
   push:
     branches:
-      - master
+      - master  # Make sure this matches your branch name
 
 jobs:
   deploy:
@@ -22,15 +22,19 @@ jobs:
         sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libgit2-dev libicu-dev libssh2-1-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libjpeg-dev libpng-dev libtiff-dev
 
     - name: Install R dependencies
+      env:
+        R_LIBS_USER: ~/R/library
       run: |
+        mkdir -p ~/R/library
         Rscript -e "install.packages(c('curl', 'gert', 'gh', 'usethis', 'pkgdown', 'rcmdcheck', 'rversions', 'urlchecker'), repos='https://cran.rstudio.com/')"
         Rscript -e "install.packages('devtools', repos='https://cran.rstudio.com/')"
 
     - name: Install songbird R package
-      run: |
-        Rscript -e "devtools::install_github('sebsilas/songbird')"
       env:
         GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
+        R_LIBS_USER: ~/R/library
+      run: |
+        Rscript -e "devtools::install_github('sebsilas/songbird')"
 
     - name: Configure SSH
       run: |
@@ -42,13 +46,19 @@ jobs:
     - name: Deploy to Shiny Server
       env:
         GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
+        R_LIBS_USER: ~/R/library
       run: |
-        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
+        mkdir -p ~/R/library
         Rscript -e "devtools::install_github('sebsilas/songbird')"
         EOF
 
     - name: Restart Shiny Server
       run: |
-        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
         sudo systemctl restart shiny-server
         EOF
+      env:
+        SSH_USER: ${{ secrets.SSH_USER }}
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
