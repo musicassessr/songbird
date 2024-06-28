@@ -42,7 +42,8 @@ jobs:
         for dir in /srv/shiny-server/singpause-saa /srv/shiny-server/singpause-singalong /srv/shiny-server/singpause-solo; do
           cd \$dir
           sudo chown -R ${{ secrets.SSH_USER }}:\$USER renv/library/R-4.1/x86_64-pc-linux-gnu
-          Rscript -e "renv::restore()"
+          Rscript -e "renv::cache_clean(confirm = FALSE)"
+          Rscript -e "renv::restore(repos = c(CRAN = 'https://cran.rstudio.com'))"
           Rscript -e "Sys.setenv(GITHUB_PAT = Sys.getenv('MY_GITHUB_PAT')); devtools::install_github('sebsilas/songbird')"
         done
         EOF
