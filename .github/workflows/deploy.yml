@@ -29,6 +29,8 @@ jobs:
     - name: Install songbird R package
       run: |
         Rscript -e "devtools::install_github('sebsilas/songbird')"
+      env:
+        GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
 
     - name: Deploy to Shiny Server
       run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'Rscript -e "devtools::install_github(\'sebsilas/songbird\')"'
