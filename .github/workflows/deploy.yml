@@ -3,7 +3,7 @@ name: Deploy Shiny App
 on:
   push:
     branches:
-      - master  # Make sure this matches your branch name
+      - master
 
 jobs:
   deploy:
