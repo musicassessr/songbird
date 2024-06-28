@@ -32,7 +32,7 @@ jobs:
       env:
         GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
 
-     - name: Configure SSH
+    - name: Configure SSH
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
