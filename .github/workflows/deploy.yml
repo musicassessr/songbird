@@ -33,15 +33,18 @@ jobs:
         GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
 
     - name: Deploy to Shiny Server
-      run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'Rscript -e "devtools::install_github(\'sebsilas/songbird\')"'
       env:
-        SSH_USER: ${{ secrets.SSH_USER }}
-        SSH_HOST: ${{ secrets.SSH_HOST }}
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
+        Rscript -e "devtools::install_github('sebsilas/songbird')"
+        EOF
 
     - name: Restart Shiny Server
-      run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'sudo systemctl restart shiny-server'
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
+        sudo systemctl restart shiny-server
+        EOF
       env:
         SSH_USER: ${{ secrets.SSH_USER }}
         SSH_HOST: ${{ secrets.SSH_HOST }}
