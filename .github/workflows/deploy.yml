@@ -1,4 +1,3 @@
-
 name: Deploy Shiny App
 
 on:
@@ -36,13 +35,13 @@ jobs:
 
     - name: Deploy to Shiny Server
       env:
-        GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
+        MY_GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
         set -e
         for dir in /srv/shiny-server/singpause-saa /srv/shiny-server/singpause-singalong /srv/shiny-server/singpause-solo; do
           cd \$dir
-          Rscript -e "devtools::install_github('sebsilas/songbird')"
+          Rscript -e "Sys.setenv(GITHUB_PAT = Sys.getenv('MY_GITHUB_PAT')); devtools::install_github('sebsilas/songbird')"
         done
         EOF
 
