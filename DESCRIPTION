@@ -3,9 +3,9 @@ Type: Package
 Title: The SongBird app
 Version: 0.1.1
 Author: Seb Silas
-Maintainer: Seb Silas <sebsilas@gmail.com)
+Maintainer: Seb Silas <sebsilas@gmail.com>
 Description: An app for managing the SongBird application.
-License: MIT License.
+License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
