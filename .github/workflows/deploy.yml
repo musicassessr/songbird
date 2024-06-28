@@ -19,8 +19,8 @@ jobs:
 
     - name: Install R packages
       run: |
-        install.packages('devtools')
-        devtools::install_github('sebsilas/songbird')
+        Rscript -e "install.packages('devtools')"
+        Rscript -e "devtools::install_github('sebsilas/songbird')"
 
     - name: Deploy to Shiny Server
       run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'Rscript -e "devtools::install_github(\'sebsilas/songbird\')"'
