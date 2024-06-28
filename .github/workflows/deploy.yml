@@ -32,20 +32,23 @@ jobs:
       env:
         GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
 
+     - name: Configure SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        echo -e "Host *\n  StrictHostKeyChecking no" > ~/.ssh/config
+
     - name: Deploy to Shiny Server
       env:
         GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
         Rscript -e "devtools::install_github('sebsilas/songbird')"
         EOF
 
     - name: Restart Shiny Server
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
         sudo systemctl restart shiny-server
         EOF
-      env:
-        SSH_USER: ${{ secrets.SSH_USER }}
-        SSH_HOST: ${{ secrets.SSH_HOST }}
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
