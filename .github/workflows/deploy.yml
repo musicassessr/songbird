@@ -6,7 +6,8 @@ name: Deploy Shiny App
 on:
   push:
     branches:
-      - master
+      - devel
+      - prod
 
 jobs:
   deploy:
@@ -40,7 +41,12 @@ jobs:
       env:
         MY_GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
+        if [ "${{ github.ref }}" == "refs/heads/prod" ]; then
+          SSH_HOST="${{ secrets.SSH_HOST_PROD }}"
+        else
+          SSH_HOST="${{ secrets.SSH_HOST_DEV }}"
+        fi
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@$SSH_HOST <<EOF
         set -e
         for dir in /srv/shiny-server/singpause-saa /srv/shiny-server/singpause-singalong /srv/shiny-server/singpause-solo; do
           echo "now installing in \$dir"
@@ -55,10 +61,16 @@ jobs:
 
     - name: Restart Shiny Server
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<EOF
+        if [ "${{ github.ref }}" == "refs/heads/prod" ]; then
+          SSH_HOST="${{ secrets.SSH_HOST_PROD }}"
+        else
+          SSH_HOST="${{ secrets.SSH_HOST_DEV }}"
+        fi
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@$SSH_HOST <<EOF
         sudo systemctl restart shiny-server
         EOF
       env:
         SSH_USER: ${{ secrets.SSH_USER }}
-        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_HOST_DEV: ${{ secrets.SSH_HOST_DEV }}
+        SSH_HOST_PROD: ${{ secrets.SSH_HOST_PROD }}
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
