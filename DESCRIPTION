@@ -11,7 +11,7 @@ LazyData: true
 RoxygenNote: 7.3.1
 Imports: 
     magrittr,
-    musicassessr@devel,
+    musicassessr,
     SAA (>= 2.4.0),
     musicassessrdb
 Depends: 
@@ -20,5 +20,5 @@ URL: https://github.com/sebsilas/songbird
 BugReports: https://github.com/sebsilas/songbird/issues
 Remotes: 
     sebsilas/SAA,
-    sebsilas/musicassessr,
+    sebsilas/musicassessr@devel,
     sebsilas/musicassessrdb
