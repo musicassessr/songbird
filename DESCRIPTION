@@ -20,5 +20,5 @@ Imports:
     musicassessrdb
 Remotes: 
     sebsilas/SAA,
-    sebsilas/musicassessr@devel,
+    sebsilas/musicassessr,
     sebsilas/musicassessrdb
