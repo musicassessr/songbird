@@ -38,8 +38,6 @@ jobs:
         echo -e "Host *\n  StrictHostKeyChecking no" > ~/.ssh/config
 
     - name: Deploy to Shiny Server
-      env:
-        MY_GITHUB_PAT: ${{ secrets.MY_GITHUB_PAT }}
       run: |
         if [ "${{ github.ref }}" == "refs/heads/prod" ]; then
           SSH_HOST="${{ secrets.SSH_HOST_PROD }}"
@@ -53,9 +51,9 @@ jobs:
           cd \$dir
           sudo chown -R ${{ secrets.SSH_USER }}:\$USER renv/library/R-4.1/x86_64-pc-linux-gnu
           if [ "${{ github.ref }}" == "refs/heads/prod" ]; then
-            Rscript -e "Sys.setenv(GITHUB_PAT = Sys.getenv('MY_GITHUB_PAT')); devtools::install_github('sebsilas/songbird', upgrade = 'always')"
+            Rscript -e "devtools::install_github('sebsilas/songbird', upgrade = 'always')"
           else
-            Rscript -e "Sys.setenv(GITHUB_PAT = Sys.getenv('MY_GITHUB_PAT')); devtools::install_github('sebsilas/songbird', ref = 'devel', upgrade = 'always')"
+            Rscript -e "devtools::install_github('sebsilas/songbird', ref = 'devel', upgrade = 'always')"
           fi
         done
         EOF
