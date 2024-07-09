@@ -1,3 +1,5 @@
+# songbird 1.0.0
+
 # songbird 0.1.6
 
 - Versioning setup
