@@ -5,7 +5,7 @@ on:
     branches:
       - prod
       - devel
-      
+
 permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
@@ -67,7 +67,7 @@ jobs:
           echo "now installing in \$dir"
           cd \$dir
           sudo chown -R ${{ secrets.SSH_USER }}:\$USER renv/library/R-4.1/x86_64-pc-linux-gnu
-          Rscript -e "Sys.setenv(GITHUB_PAT = Sys.getenv('MY_GITHUB_PAT')); devtools::install_github('sebsilas/songbird', upgrade = 'always')"
+          Rscript -e "devtools::install_github('sebsilas/songbird', upgrade = 'always')"
         done
         EOF
 
@@ -111,7 +111,7 @@ jobs:
           role-to-assume: ${{ secrets.GH_DEV_ROLE }}
           role-session-name: dev_role
           aws-region: ${{ env.AWS_REGION }}
-      - name: BUILD && DEPLOY ON DEV 
+      - name: BUILD && DEPLOY ON DEV
         run: STAGE=dev yarn deploy
       - name: invalidate cloudfront cache
         run: aws cloudfront create-invalidation --distribution-id ${{ vars.CF_DIST_DEV_ID }} --paths "/*"
