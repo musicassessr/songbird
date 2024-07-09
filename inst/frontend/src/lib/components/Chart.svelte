@@ -130,7 +130,7 @@
     // Fetch data
     onMount(async () => {
         res = await getMyProgressData(userId);
-        if (res.user_id && hasData) {
+        if (res?.review_melodies?.length > 0 || res?.session_scores_rhythmic?.length > 0 ) {
             populateCharts();
             populateDropdown(res.review_melodies);
             userStats = getStats(res.user_stats, currentView);
@@ -152,8 +152,10 @@
         );
 
         if (labelsRhythmic.length == 0 || rhythmicScores.length == 0) {
-            hasData = false;
             loader = false;
+
+            document.getElementById("rhythmicChartWrapper").style.display = "none";
+            return;
         }
         const rhythmicData = {
             labels: labelsRhythmic,
@@ -192,6 +194,11 @@
         const reviewDates = melodyReviewDataFiltered.map((el) => el.Date);
         const reviewScores = melodyReviewDataFiltered.map((el) => el.score);
 
+        if (reviewDates.length == 0 || reviewScores.length == 0) {
+            loader = false;
+            document.getElementById("reviewMelodiesChartWrapper").style.display = "none";
+            return;
+        }
         const compiledDataReview = {
             labels: reviewDates,
             title: $translations["my_singpause_songs_button"],
@@ -213,14 +220,14 @@
             document.getElementById("reviewMelodiesChart"),
             createConfig(compiledDataReview),
         );
-    }
+    };
 </script>
 
 <div>
     <div
         id="myProgress"
         class="container"
-        style="display: {res?.scores_session?.length > 0 ? 'block' : 'none'};"
+        style="display: {res?.review_melodies?.length > 0 || res?.session_scores_rhythmic?.length > 0 ? 'block' : 'none'};"
     >
         <br />
         <div class="view-select-wrapper">
@@ -233,31 +240,35 @@
                 </select>
             </div>
         </div>
-        <hr />
-        <h3 style="color: #229787;">
-            {@html $translations["my_sing_training_button"]}
-        </h3>
-        <hr />
+        <div id="rhythmicChartWrapper">
+            <hr />
+            <h3 style="color: #229787;">
+                {@html $translations["my_sing_training_button"]}
+            </h3>
+            <hr />
+        </div>
         <canvas id="rhythmicChart"></canvas>
         <hr />
-        <div
-            style="display: flex; justify-content: space-between; align-items: center;"
-        >
-            <h3 style="margin: 0; text-align: center;color: #229787;">
-                {@html $translations["my_singpause_songs_button"]}
-            </h3>
-            <div class="select-wrapper">
-                <select
-                    id="melodyReviewDropdown"
-                    on:change={handleDropdownChange}
-                >
-                    <!-- This will be populated dynamically -->
-                </select>
+        <div id="reviewMelodiesChartWrapper">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center;"
+            >
+                <h3 style="margin: 0; text-align: center;color: #229787;">
+                    {@html $translations["my_singpause_songs_button"]}
+                </h3>
+                <div class="select-wrapper">
+                    <select
+                        id="melodyReviewDropdown"
+                        on:change={handleDropdownChange}
+                    >
+                        <!-- This will be populated dynamically -->
+                    </select>
+                </div>
             </div>
+            <hr />
+            <canvas id="reviewMelodiesChart"></canvas>
+            <hr />
         </div>
-        <hr />
-        <canvas id="reviewMelodiesChart"></canvas>
-        <hr />
     </div>
     {#if !hasData}
         <p>
