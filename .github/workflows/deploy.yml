@@ -26,7 +26,6 @@ jobs:
             - 'inst/frontend/**'
           shiny:
             - '!inst/frontend/**'
-            - '!.github/**'  
   deploy:
     runs-on: ubuntu-latest
     needs: changes
