@@ -241,9 +241,9 @@
             <p style="margin: 0;">{userStats}</p>
             <div class="select-wrapper">
                 <select on:change={handleViewChange}>
-                    <option selected value="overall">$translations["overall"]</option>
-                    <option value="last_month">$translations["last_month"]</option>
-                    <option value="last_week">$translations["last_week"]</option>
+                    <option selected value="overall">{@html $translations["overall"]}</option>
+                    <option value="last_month">{@html $translations["last_month"]}</option>
+                    <option value="last_week">{@html $translations["last_week"]}</option>
                 </select>
             </div>
         </div>
