@@ -87,6 +87,9 @@ jobs:
     needs: changes
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/devel' && needs.changes.outputs.frontend == 'true' }}
+    defaults:
+      run:
+        working-directory: ./inst/frontend
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
@@ -105,4 +108,4 @@ jobs:
           role-session-name: dev_role
           aws-region: ${{ env.AWS_REGION }}
       - name: BUILD && DEPLOY ON DEV 
-        run: cd inst/frontend && yarn deploy
+        run: yarn deploy
