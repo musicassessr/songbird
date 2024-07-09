@@ -1,0 +1,16 @@
+{
+  "name": "cognito-triggers",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "yarn tsc"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.496.0",
+    "postgres": "^3.4.3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.131",
+    "@types/node": "^20.11.5",
+    "typescript": "^5.3.3"
+  }
+}

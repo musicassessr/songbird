@@ -1,18 +1,31 @@
-# Note that to get this to build, I had to explicitly install pmcharrison/abcR in the singpause- directories
-# And also, on the server (i.e., separate to the build), use credentials::set_github_pat() first
-##
-name: Deploy Shiny App
+name: Deploy Shiny App On Dev
 
 on:
   push:
     branches:
-      - devel
       - prod
+      - devel
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      shiny: ${{ steps.changes.outputs.shiny }}
+      frontend: ${{ steps.changes.outputs.frontend }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          frontend:
+            - 'inst/frontend/**'
+          shiny:
+            - '!inst/frontend/**'    
   deploy:
     runs-on: ubuntu-latest
-
+    needs: changes
+    if: ${{ needs.changes.outputs.shiny == 'true' }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -50,11 +63,7 @@ jobs:
           echo "now installing in \$dir"
           cd \$dir
           sudo chown -R ${{ secrets.SSH_USER }}:\$USER renv/library/R-4.1/x86_64-pc-linux-gnu
-          if [ "${{ github.ref }}" == "refs/heads/prod" ]; then
-            Rscript -e "devtools::install_github('sebsilas/songbird', upgrade = 'always')"
-          else
-            Rscript -e "devtools::install_github('sebsilas/songbird', ref = 'devel', upgrade = 'always')"
-          fi
+          Rscript -e "Sys.setenv(GITHUB_PAT = Sys.getenv('MY_GITHUB_PAT')); devtools::install_github('sebsilas/songbird', upgrade = 'always')"
         done
         EOF
 
@@ -73,3 +82,27 @@ jobs:
         SSH_HOST_DEV: ${{ secrets.SSH_HOST_DEV }}
         SSH_HOST_PROD: ${{ secrets.SSH_HOST_PROD }}
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+  deploy-dev:
+    needs: changes
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/devel' && needs.changes.outputs.frontend == 'true' }}
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+      - name: Install dependenecies and configure env file
+        uses: actions/setup-node@v3
+        with:
+            node-version: 18
+            cache: 'yarn'
+      - run: yarn install
+      - run : yarn add serverless@3.x
+      - run: echo "$DEV_ENV_FILE" | base64 -d > .env.dev
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.GH_DEV_ROLE }}
+          role-session-name: dev_role
+          aws-region: ${{ env.AWS_REGION }}
+      - name: BUILD && DEPLOY ON DEV 
+        run: cd inst/frontend && yarn deploy
