@@ -249,7 +249,7 @@
 
         try {
             if (custom == "singpause") {
-                toast.loading("Loading...");
+                toast.loading($translations['loading_msg']);
 
                 job_id = await selectItems(userId);
             } else {

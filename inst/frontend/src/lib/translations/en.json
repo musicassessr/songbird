@@ -26,5 +26,6 @@
     "email_sign_up": "Email (optional)",
     "password_sign_up": "Password (6-12 characters)",
     "verify_password_sign_up": "Verify Password",
-    "sign_up": "Sign Up"
+    "sign_up": "Sign Up",
+    "loading_msg": "Loading..."
 }
