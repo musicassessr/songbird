@@ -113,4 +113,6 @@ jobs:
           role-session-name: dev_role
           aws-region: ${{ env.AWS_REGION }}
       - name: BUILD && DEPLOY ON DEV 
-        run: yarn deploy
+        run: STAGE=dev yarn deploy
+      - name: invalidate cloudfront cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ vars.CF_DIST_DEV_ID }} --paths "/*"

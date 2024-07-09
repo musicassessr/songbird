@@ -55,12 +55,12 @@
         songStatsDataRows = songStatsDataHandler.getRows();
     };
 
-    const handleViewChange=(event) => {
+    const handleViewChange = (event) => {
         currentView = event.target.value;
         updateDataHandlers();
-    }
+    };
 
-    const  getGroupStats=() =>{
+    const getGroupStats = async () => {
         const url = `${API_BASE_URL}/get-trial-and-session-data`;
         const payload = {
             group_id: 5,
@@ -82,7 +82,7 @@
             loader = false;
             return result;
         } catch (error) {}
-    }
+    };
 
     const handleSubmit = async (event: any) => {
         const data = new FormData(event.target);
