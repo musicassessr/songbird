@@ -67,7 +67,11 @@ jobs:
           echo "now installing in \$dir"
           cd \$dir
           sudo chown -R ${{ secrets.SSH_USER }}:\$USER renv/library/R-4.1/x86_64-pc-linux-gnu
-          Rscript -e "devtools::install_github('sebsilas/songbird', upgrade = 'always')"
+          if [ "${{ github.ref }}" == "refs/heads/prod" ]; then
+            Rscript -e "devtools::install_github('sebsilas/songbird', upgrade = 'always')"
+          else
+            Rscript -e "devtools::install_github('sebsilas/songbird', upgrade = 'always', ref = 'devel')"
+          fi
         done
         EOF
 
