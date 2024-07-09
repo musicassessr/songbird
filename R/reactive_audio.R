@@ -65,7 +65,7 @@ reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
 
           audio_file <- tb_row$audio_file
 
-          audio_file_path <- paste0('assets/audio/', audio_file)
+          audio_file_path <- URLdecode(paste0('assets/audio/', audio_file))
 
           user_id <- psychTestR::get_global("user_id", state)
 
