@@ -27,5 +27,8 @@
     "password_sign_up": "Password (6-12 characters)",
     "verify_password_sign_up": "Verify Password",
     "sign_up": "Sign Up",
-    "loading_msg": "Loading..."
+    "loading_msg": "Loading...",
+    "overall": "Overall",
+    "last_month": "Last month",
+    "last_week": "Last week"
 }

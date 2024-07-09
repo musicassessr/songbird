@@ -23,7 +23,7 @@
         let startDate;
         let current_view =
             currentView == "overall"
-                ? "You practiced"
+                ? $translations["You_practiced"]
                 : `In the ${currentView.replace("_", " ")}, you practiced`;
 
         if (period === "last_week") {
