@@ -21,37 +21,39 @@
     const getStats = (userStats, period) => {
         const now = new Date();
         let startDate;
-        let current_view =
-            currentView == "overall"
-                ? "You practiced"
-                : `In the ${currentView.replace("_", " ")}, you practiced`;
-
-        if (period === "last_week") {
-            startDate = new Date(now.setDate(now.getDate() - 7));
-        } else if (period === "last_month") {
-            startDate = new Date(now.setMonth(now.getMonth() - 1));
-        } else {
-            startDate = new Date(0); // All time
-        }
-
+        let translationKey;
         let totalMinutesSpent = 0;
         let totalPracticeSessions = 0;
 
+        switch (period) {
+            case "last_week":
+                startDate = new Date(now.setDate(now.getDate() - 7));
+                translationKey = "last_week_you_practiced";
+                break;
+            case "last_month":
+                startDate = new Date(now.setMonth(now.getMonth() - 1));
+                translationKey = "last_month_you_practiced";
+                break;
+            default:
+                startDate = new Date(0); // All time
+                translationKey = "overall_you_practiced";
+        }
+
         userStats.forEach((stat) => {
             const statDate = new Date(stat.Date);
-
             if (statDate >= startDate) {
                 totalMinutesSpent += stat.minutes_spent;
                 totalPracticeSessions += stat.no_practice_sessions;
             }
         });
 
-        if (totalMinutesSpent >= 60) {
-            const totalHoursSpent = Math.round(totalMinutesSpent / 60);
-            return `${current_view} for ${totalHoursSpent} hours across ${totalPracticeSessions} practice sessions. Well done!`;
-        }
-
-        return `${current_view} for ${totalMinutesSpent.toFixed(0)} minutes across ${totalPracticeSessions} practice sessions. Well done!`;
+        const totalTimeSpent =
+            totalMinutesSpent >= 60
+                ? `${Math.round(totalMinutesSpent / 60)} ${$translations["hours"]}`
+                : `${totalMinutesSpent.toFixed(0)} ${$translations["minutes"]}`;
+        return $translations[translationKey]
+            .replace("{totalTimeSpent}", totalTimeSpent)
+            .replace("{totalPracticeSessions}", totalPracticeSessions);
     };
 
     const handleViewChange = (event) => {
@@ -72,16 +74,9 @@
                         position: "top",
                     },
                 },
-                scales: {
-                    y: {
-                        min: 0,
-                        max: 1,
-                    },
-                },
             },
         };
     };
-
 
     // Function to populate the dropdown
     const populateDropdown = (melodyReviewData) => {
@@ -137,7 +132,10 @@
     // Fetch data
     onMount(async () => {
         res = await getMyProgressData(userId);
-        if (res?.review_melodies?.length > 0 || res?.session_scores_rhythmic?.length > 0 ) {
+        if (
+            res?.review_melodies?.length > 0 ||
+            res?.session_scores_rhythmic?.length > 0
+        ) {
             populateCharts();
             populateDropdown(res.review_melodies);
             userStats = getStats(res.user_stats, currentView);
@@ -161,7 +159,8 @@
         if (labelsRhythmic.length == 0 || rhythmicScores.length == 0) {
             loader = false;
 
-            document.getElementById("rhythmicChartWrapper").style.display = "none";
+            document.getElementById("rhythmicChartWrapper").style.display =
+                "none";
             return;
         }
         const rhythmicData = {
@@ -203,7 +202,9 @@
 
         if (reviewDates.length == 0 || reviewScores.length == 0) {
             loader = false;
-            document.getElementById("reviewMelodiesChartWrapper").style.display = "none";
+            document.getElementById(
+                "reviewMelodiesChartWrapper",
+            ).style.display = "none";
             return;
         }
         const compiledDataReview = {
@@ -234,16 +235,25 @@
     <div
         id="myProgress"
         class="container"
-        style="display: {res?.review_melodies?.length > 0 || res?.session_scores_rhythmic?.length > 0 ? 'block' : 'none'};"
+        style="display: {res?.review_melodies?.length > 0 ||
+        res?.session_scores_rhythmic?.length > 0
+            ? 'block'
+            : 'none'};"
     >
         <br />
         <div class="view-select-wrapper">
             <p style="margin: 0;">{userStats}</p>
             <div class="select-wrapper">
                 <select on:change={handleViewChange}>
-                    <option selected value="overall">{@html $translations["overall"]}</option>
-                    <option value="last_month">{@html $translations["last_month"]}</option>
-                    <option value="last_week">{@html $translations["last_week"]}</option>
+                    <option selected value="overall"
+                        >{$translations["overall"]}</option
+                    >
+                    <option value="last_month"
+                        >{$translations["last_month"]}</option
+                    >
+                    <option value="last_week"
+                        >{$translations["last_week"]}</option
+                    >
                 </select>
             </div>
         </div>

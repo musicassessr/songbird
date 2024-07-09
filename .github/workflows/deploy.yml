@@ -1,4 +1,4 @@
-name: Deploy Shiny App On Dev
+name: Deploy Shiny App
 
 on:
   push:

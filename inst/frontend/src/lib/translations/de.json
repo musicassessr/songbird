@@ -1,7 +1,7 @@
 {
     "welcome": "Willkommen",
     "welcome1": "Willkommen beim <span>Songbird</span> test launch control panel",
-    "welcome2" : "Bitte melde dich an, um mit dem Singtraining zu starten!",
+    "welcome2": "Bitte melde dich an, um mit dem Singtraining zu starten!",
     "songbird_button": "Songbird",
     "my_sing_training_button": "Mein Sing-Training",
     "my_singpause_songs_button": "Meine Songs",
@@ -12,7 +12,7 @@
     "launch_song_along": "Sing-along",
     "launch_song_solo": "Solo",
     "sign_out": "Ausloggen",
-    "sign_in" : "Anmelden",
+    "sign_in": "Anmelden",
     "help_contact": "Du brauchst Hilfe? Kontaktiere",
     "missing_data": "Du hast noch nicht genügend geübt. Übe etwas mehr, um Ergebnisse zu bekommen!",
     "change_password": "Hier kannst du dein Passwort ändern.",
@@ -30,5 +30,10 @@
     "loading_msg": "Laden...",
     "overall": "Insgesamt",
     "last_month": "Letzten Monat",
-    "last_week": "Letzte Woche"
+    "last_week": "Letzte Woche",
+    "overall_you_practiced": "Du hast {totalTimeSpent} über {totalPracticeSessions} Übungseinheiten geübt. Gut gemacht!",
+    "last_month_you_practiced": "Im letzten Monat hast du {totalTimeSpent} über {totalPracticeSessions} Übungseinheiten geübt. Gut gemacht!",
+    "last_week_you_practiced": "In der letzten Woche hast du {totalTimeSpent} über {totalPracticeSessions} Übungseinheiten geübt. Gut gemacht!",
+    "hours": "Stunden",
+    "minutes": "Minuten"
 }
