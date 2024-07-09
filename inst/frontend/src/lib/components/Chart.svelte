@@ -72,9 +72,16 @@
                         position: "top",
                     },
                 },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 1,
+                    },
+                },
             },
         };
     };
+
 
     // Function to populate the dropdown
     const populateDropdown = (melodyReviewData) => {
