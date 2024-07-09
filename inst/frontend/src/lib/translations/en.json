@@ -30,5 +30,10 @@
     "loading_msg": "Loading...",
     "overall": "Overall",
     "last_month": "Last month",
-    "last_week": "Last week"
+    "last_week": "Last week",
+    "hours":"hours",
+    "minutes":"minutes",
+    "overall_you_practiced": "You practiced for {totalTimeSpent} across {totalPracticeSessions} practice sessions. Well done!",
+    "last_month_you_practiced": "In the last month, you practiced for {totalTimeSpent} across {totalPracticeSessions} practice sessions. Well done!",
+    "last_week_you_practiced": "In the last week, you practiced for {totalTimeSpent} across {totalPracticeSessions} practice sessions. Well done!"
 }
