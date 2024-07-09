@@ -11,7 +11,8 @@
 #'
 #' @examples
 launch_audio_item_receiver <- function(max_goes = 3L,
-                                       paradigm_type = c("call_and_response", "simultaneous_recall"),
+                                       paradigm_type = c("call_and_response",
+                                                         "simultaneous_recall"),
                                        app_name) {
 
   paradigm_type <- match.arg(paradigm_type)

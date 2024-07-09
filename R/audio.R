@@ -41,7 +41,7 @@ iterate_row <- function(..., total_no_melodies, max_goes = 3L, user_id = 1L, par
 
   audio_file <- tb_row$audio_file
 
-  audio_file_path <- paste0('assets/audio/', audio_file)
+  audio_file_path <- URLdecode(paste0('assets/audio/', audio_file))
 
   audio_file_melodic_production_page(tb_row,
                                      audio_file_path,
