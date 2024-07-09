@@ -23,7 +23,7 @@
         let startDate;
         let current_view =
             currentView == "overall"
-                ? $translations["You_practiced"]
+                ? "You practiced"
                 : `In the ${currentView.replace("_", " ")}, you practiced`;
 
         if (period === "last_week") {
@@ -241,9 +241,9 @@
             <p style="margin: 0;">{userStats}</p>
             <div class="select-wrapper">
                 <select on:change={handleViewChange}>
-                    <option selected value="overall">Overall</option>
-                    <option value="last_month">Last Month</option>
-                    <option value="last_week">Last Week</option>
+                    <option selected value="overall">$translations["overall"]</option>
+                    <option value="last_month">$translations["last_month"]</option>
+                    <option value="last_week">$translations["last_week"]</option>
                 </select>
             </div>
         </div>
