@@ -1001,9 +1001,3 @@
         </div>
     </div>
 </div>
-
-<!-- 
-<div>
-    <button class="button">Sign out</button
-    >
-</div> -->
