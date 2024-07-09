@@ -1,0 +1,120 @@
+service: musicassessr-cognito
+frameworkVersion: "3"
+useDotenv: true
+
+provider:
+  name: aws
+  region: ${opt:region, 'eu-central-1'}
+  runtime: nodejs18.x
+  architecture: arm64
+  deploymentMethod: direct
+  profile: ${env:AWS_PROFILE}
+  deploymentBucket:
+    name: ${env:DEPLOYMENT_BUCKET}
+  environment: ${file(serverless/environment.yaml)}
+
+plugins:
+  - serverless-deployment-bucket
+
+iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action: "*"
+          Resource: "*"
+custom:
+  userPoolName: musicassessr-user-pool-${sls:stage}
+  deploymentBucket:
+    accelerate: true
+    blockPublicAccess: true
+
+
+
+functions:
+  - ${file(serverless/cognito_triggers.yaml)}
+
+resources:
+  Resources:
+    UserPool:
+      Type: AWS::Cognito::UserPool
+      DeletionPolicy: Retain
+      Properties:
+        MfaConfiguration: OFF
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: false
+        UserPoolName: ${self:custom.userPoolName}
+        AutoVerifiedAttributes:
+          - "email"
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
+            RequireLowercase: True
+            RequireNumbers: True
+            RequireSymbols: False
+            RequireUppercase: True
+        Schema:
+          - AttributeDataType: "String"
+            Name: email
+            Required: false
+          - AttributeDataType: "String"
+            Name: userId
+            Required: false
+          - AttributeDataType: "String"
+            Name: groupId
+            Required: false
+    UserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      DeletionPolicy: Retain
+      Properties:
+        ClientName: ${self:service}-UserPoolClient-${sls:stage}
+        UserPoolId:
+          Ref: UserPool
+        AllowedOAuthFlowsUserPoolClient: true
+        AllowedOAuthFlows:
+          - implicit
+        AllowedOAuthScopes:
+          - phone
+          - email
+          - openid
+          - profile
+          - aws.cognito.signin.user.admin
+        ExplicitAuthFlows:
+          - ALLOW_ADMIN_USER_PASSWORD_AUTH
+          - ALLOW_USER_SRP_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+          - ALLOW_CUSTOM_AUTH
+        CallbackURLs:
+          - https://localhost:3000
+        GenerateSecret: false
+        PreventUserExistenceErrors: ENABLED
+        SupportedIdentityProviders:
+          - COGNITO
+        TokenValidityUnits:
+          AccessToken: hours
+          IdToken: hours
+          RefreshToken: days
+        AccessTokenValidity: 24 # hrs
+        IdTokenValidity: 24 # hrs
+        RefreshTokenValidity: 356 # days
+
+    # &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& SSM Parameters &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+    UserPoolIdParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /${sls:stage}/musicassessr/Cognito/UserPool/Pub/UserPoolId
+        Type: String
+        Value: !Ref UserPool
+
+    UserPoolNameParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /${sls:stage}/musicassessr/Cognito/UserPool/Pub/UserPoolName
+        Type: String
+        Value: ${self:custom.userPoolName}
+
+    UserPoolClientIdParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /${sls:stage}/musicassessr/Cognito/UserPool/Pub/UserPoolClientId
+        Type: String
+        Value: !Ref UserPoolClient
