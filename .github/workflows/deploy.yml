@@ -86,6 +86,9 @@ jobs:
   deploy-dev:
     needs: changes
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION : "eu-west-1"
+      DEV_ENV_FILE : ${{ secrets.DEV_ENV_FILE }}
     if: ${{ github.ref == 'refs/heads/devel' && needs.changes.outputs.frontend == 'true' }}
     defaults:
       run:
