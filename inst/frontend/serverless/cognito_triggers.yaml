@@ -1,0 +1,21 @@
+# cognito user pool triggers (Legacy)
+cognitoTriggersHandler:
+  handler: serverless/src/cognito/dist/main.handler
+  timeout: 60
+  memorySize: 1024
+  package:
+    individually: true
+    patterns:
+      - "!./**"
+      - serverless/src/cognito/dist/**
+      - serverless/src/cognito/node_modules/**
+
+  events:
+    - cognitoUserPool:
+        pool: ${self:custom.userPoolName}
+        trigger: PreSignUp
+        existing: true
+    - cognitoUserPool:
+        pool: ${self:custom.userPoolName}
+        trigger: PostConfirmation
+        existing: true
