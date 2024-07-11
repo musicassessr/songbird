@@ -40,6 +40,7 @@ launch_audio_item_receiver <- function(max_goes = 3L,
                                          instrument_id = 1L, # Voice
                                          app_name = app_name,
                                          asynchronous_api_mode = TRUE,
+                                         redirect_on_failure_url = app_url,
                                          css = c("https://musicassessr.com/assets/css/style_songbird.css", system.file("www/css/musicassessr.css", package = 'musicassessr'))),
 
     final_page = musicassessr::redirect_page(text = psychTestR::i18n("redirect_message"),
