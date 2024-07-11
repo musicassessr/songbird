@@ -1,4 +1,7 @@
+
 # songbird 1.1.0
+
+- Add redirect on failure feature (and polling API only up to three times)
 
 # songbird 1.0.0
 
