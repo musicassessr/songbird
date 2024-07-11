@@ -36,12 +36,12 @@ read_lyrics <- function(f, remove_extra_chars = FALSE) {
 create_item_bank(name = "singpause_2024",
                  input = "files",
                  output = 'item',
-                 midi_file_dir = "~/singpause/inst/stimuli/midi")
+                 midi_file_dir = "~/songbird/inst/stimuli/midi")
 
 # Move to current dir
 
-file.rename(from = 'singpause_2024_file.rda', to = '~/singpause/data-raw/singpause_2024_file.rda')
-file.rename(from = 'singpause_2024_item.rda', to = '~/singpause/data-raw/singpause_2024_item.rda')
+file.rename(from = 'singpause_2024_file.rda', to = '~/songbird/data-raw/singpause_2024_file.rda')
+file.rename(from = 'singpause_2024_item.rda', to = '~/songbird/data-raw/singpause_2024_item.rda')
 
 load('data-raw/singpause_2024_item.rda')
 singpause_item_item_bank <- item_bank
@@ -58,10 +58,10 @@ rm(item_bank)
 create_item_bank(name = "singpause_2024_phrase",
                  input = "files_phrases",
                  output = 'item',
-                 midi_file_dir = "~/singpause/inst/stimuli/midi phrases")
+                 midi_file_dir = "~/songbird/inst/stimuli/midi phrases")
 
-file.rename(from = 'singpause_2024_phrase_file.rda', to = '~/singpause/data-raw/singpause_2024_phrase_file.rda')
-file.rename(from = 'singpause_2024_phrase_item.rda', to = '~/singpause/data-raw/singpause_2024_phrase_item.rda')
+file.rename(from = 'singpause_2024_phrase_file.rda', to = '~/songbird/data-raw/singpause_2024_phrase_file.rda')
+file.rename(from = 'singpause_2024_phrase_item.rda', to = '~/songbird/data-raw/singpause_2024_phrase_item.rda')
 
 
 load('data-raw/singpause_2024_phrase_item.rda')
@@ -99,7 +99,7 @@ singpause_phrase_item_bank <- singpause_phrase_item_bank %>%
 
 # Add metadata
 
-singpause_2024_metadata <- readxl::read_excel('~/singpause/inst/stimuli/singpause_metadata.xlsx') %>%
+singpause_2024_metadata <- readxl::read_excel('~/songbird/inst/stimuli/singpause_metadata.xlsx') %>%
   # Normalise strings with umlauts
   mutate(midi_file = stringi::stri_trans_nfc(midi_file))
 
@@ -128,13 +128,13 @@ singpause_phrase_item_bank <- singpause_phrase_item_bank %>%
 
 singpause_item_item_bank <- singpause_item_item_bank %>%
   rowwise() %>%
-  dplyr::mutate(lyrics = read_lyrics(paste0("~/singpause/inst/stimuli/lyrics/", lyrics_file))) %>%
+  dplyr::mutate(lyrics = read_lyrics(paste0("~/songbird/inst/stimuli/lyrics/", lyrics_file))) %>%
   ungroup()
 
 
 singpause_phrase_item_bank <- singpause_phrase_item_bank %>%
   rowwise() %>%
-  dplyr::mutate(lyrics = read_lyrics(paste0("~/singpause/inst/stimuli/lyrics/", lyrics_file), remove_extra_chars = TRUE)) %>%
+  dplyr::mutate(lyrics = read_lyrics(paste0("~/songbird/inst/stimuli/lyrics/", lyrics_file), remove_extra_chars = TRUE)) %>%
   ungroup()
 
 

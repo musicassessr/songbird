@@ -7,11 +7,12 @@
 launch_audio_item_receiver(
   max_goes = 3L,
   paradigm_type = c("call_and_response", "simultaneous_recall"),
-  app_name
+  app_name,
+  app_url = "https://dev.singpause.songbird.training/dashboard/"
 )
 }
 \arguments{
-\item{app_name}{}
+\item{app_url}{}
 }
 \description{
 Launch audio item receiver

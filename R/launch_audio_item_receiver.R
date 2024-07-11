@@ -5,6 +5,7 @@
 #' @param max_goes
 #' @param paradigm_type
 #' @param app_name
+#' @param app_url
 #'
 #' @return
 #' @export
@@ -13,7 +14,8 @@
 launch_audio_item_receiver <- function(max_goes = 3L,
                                        paradigm_type = c("call_and_response",
                                                          "simultaneous_recall"),
-                                       app_name) {
+                                       app_name,
+                                       app_url = "https://dev.singpause.songbird.training/dashboard/") {
 
   paradigm_type <- match.arg(paradigm_type)
 
@@ -42,7 +44,7 @@ launch_audio_item_receiver <- function(max_goes = 3L,
 
     final_page = musicassessr::redirect_page(text = psychTestR::i18n("redirect_message"),
                                              ms = 3000,
-                                             url = "https://dev.singpause.songbird.training/dashboard/",
+                                             url = app_url,
                                              final = TRUE),
 
     # psychTestR vars
@@ -50,7 +52,7 @@ launch_audio_item_receiver <- function(max_goes = 3L,
     logo_width = "200px",
     logo_height = "76px",
     logo_position = 'left',
-    logo_url = "https://dev.singpause.songbird.training/dashboard/",
+    logo_url = app_url,
     enable_admin_panel = FALSE,
 
     # The custom-translated SingPause dictionary
