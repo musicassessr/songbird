@@ -9,8 +9,8 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
-URL: https://github.com/sebsilas/songbird
-BugReports: https://github.com/sebsilas/songbird/issues
+URL: https://github.com/musicassessr/songbird
+BugReports: https://github.com/musicassessr/songbird/issues
 Depends: 
     R (>= 2.10)
 Imports: 
