@@ -17,5 +17,5 @@ inst/frontend/build
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .serverless
-dist
+dist/
 .svelte-kit
