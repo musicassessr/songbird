@@ -221,6 +221,7 @@
   .checkbox-container input {
     margin-right: 0.5rem;
     margin-top: 0.2rem;
+    display: block;
   }
 
   @media (max-width: 600px) {

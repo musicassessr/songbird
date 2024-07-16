@@ -483,11 +483,6 @@ header a:focus {
 }
 
 
-.checkbox-container label {
-  display: block;
-}
-
-
 /* modals */
 
 #shiny_modal {
