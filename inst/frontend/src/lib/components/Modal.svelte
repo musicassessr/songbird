@@ -223,10 +223,6 @@
     margin-top: 0.2rem;
   }
 
-  .checkbox-container label {
-    display: block;
-  }
-
   @media (max-width: 600px) {
     .modal-content {
       padding: 1rem;
