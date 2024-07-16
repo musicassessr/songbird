@@ -221,6 +221,9 @@
   .checkbox-container input {
     margin-right: 0.5rem;
     margin-top: 0.2rem;
+  }
+
+  .checkbox-container label {
     display: block;
   }
 
