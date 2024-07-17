@@ -77,7 +77,7 @@ reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
                           page_text)
 
                 stimulus_preview_page(audio_file_path,
-                                       page_title,
+                                       page_title = "Vorschau",
                                        page_text,
                                        audio_file,
                                        attempts_left,
@@ -86,7 +86,8 @@ reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
                                        melody_no,
                                        tb_row,
                                        paradigm_type)
-          }),
+
+          }) else musicassessr::empty_code_block(),
 
 
         psychTestR::reactive_page(function(state, ...) {
