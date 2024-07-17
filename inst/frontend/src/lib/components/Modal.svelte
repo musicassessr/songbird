@@ -77,7 +77,8 @@
               meines Kindes jederzeit widerrufen und eine Löschung aller Daten verlangen
               kann, ohne dass mir daraus Nachteile entstehen.
             </label>
-
+          </div>
+          <div class="checkbox-container">
             <input
               type="checkbox"
               id="agreeRecording"
@@ -217,6 +218,11 @@
     margin: 1rem 0;
     display: flex;
     align-items: flex-start;
+    flex-direction: row;
+  }
+
+  .checkbox-container label {
+    display: inline-block;
   }
 
   .checkbox-container input {
