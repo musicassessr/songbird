@@ -1,3 +1,6 @@
+# songbird 1.2.0
+
+- Fixed several bugs and added new features in response to v1.1.0
 
 # songbird 1.1.0
 

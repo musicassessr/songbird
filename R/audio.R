@@ -168,7 +168,7 @@ audio_file_melodic_production_page <- function(tb_row,
           show_progress = FALSE,
           melody_no = melody_no,
           lyrics = tb_row$lyrics,
-          trigger_start_of_stimulus_fun = musicassessr::paradigm(paradigm_type = paradigm_type, stimuli_type = "audio", feedback = TRUE, asynchronous_api_mode = TRUE)$trigger_start_of_stimulus_fun,
+          trigger_start_of_stimulus_fun = musicassessr::paradigm(paradigm_type = paradigm_type, stimuli_type = "audio", feedback = TRUE, asynchronous_api_mode = TRUE, simultaneous_recall_show_stop = TRUE)$trigger_start_of_stimulus_fun,
           trigger_end_of_stimulus_fun = musicassessr::paradigm(paradigm_type = paradigm_type, stimuli_type = "audio", feedback = TRUE, asynchronous_api_mode = TRUE)$trigger_end_of_stimulus_fun
         )
 
@@ -181,3 +181,31 @@ audio_file_melodic_production_page <- function(tb_row,
 }
 
 
+stimulus_preview_page <- function(audio_file_path,
+                                  page_title,
+                                  page_text,
+                                  audio_file,
+                                  attempts_left,
+                                  max_goes,
+                                  total_no_melodies,
+                                  melody_no,
+                                  tb_row,
+                                  paradigm_type) {
+  musicassessr::present_stimuli(
+    stimuli = audio_file_path,
+    stimuli_type = "audio",
+    display_modality = "auditory",
+    page_title = page_title,
+    page_text = shiny::tags$div(id = "button_area", page_text),
+    page_type = "one_button_page",
+    hideOnPlay = TRUE,
+    page_label = audio_file,
+    audio_playback_as_single_play_button = TRUE,
+    attempts_left = attempts_left,
+    max_goes = max_goes,
+    total_no_melodies = total_no_melodies,
+    show_progress = FALSE,
+    melody_no = melody_no,
+    lyrics = tb_row$lyrics
+  )
+}

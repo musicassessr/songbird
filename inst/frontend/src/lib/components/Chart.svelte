@@ -77,7 +77,7 @@
                 scales: {
                     y: {
                         min: 0,
-                        max: 1,
+                        max: 10,
                     },
                 },
             },
@@ -160,7 +160,7 @@
         }
         const labelsRhythmic = res.session_scores_rhythmic.map((el) => el.Date);
         const rhythmicScores = res.session_scores_rhythmic.map(
-            (el) => el.score,
+            (el) => el.score * 10,
         );
 
         if (labelsRhythmic.length == 0 || rhythmicScores.length == 0) {
@@ -205,7 +205,7 @@
             selectedValue,
         );
         const reviewDates = melodyReviewDataFiltered.map((el) => el.Date);
-        const reviewScores = melodyReviewDataFiltered.map((el) => el.score);
+        const reviewScores = melodyReviewDataFiltered.map((el) => el.score * 10);
 
         if (reviewDates.length == 0 || reviewScores.length == 0) {
             loader = false;

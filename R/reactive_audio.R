@@ -4,9 +4,7 @@
 reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
                                                         paradigm_type = c("call_and_response", "simultaneous_recall"),
                                                         page_title = if(paradigm_type == "simultaneous_recall") psychTestR::i18n("sing_along_page_title") else psychTestR::i18n("sing_back_message"),
-                                                        page_text = shiny::tags$div(
-                                                          shiny::tags$img(id = "singImage", src = "https://musicassessr.com/assets/img/singing.png", height = 100, width = 100)
-                                                        )
+                                                        page_text = shiny::tags$div(shiny::tags$img(id = "singImage", src = "https://musicassessr.com/assets/img/singing.png", height = 100, width = 100))
                                                         ) {
 
 
@@ -40,6 +38,58 @@ reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
       user_wants_to_play_again && enough_trials
     },
       logic = list(
+
+
+        # Preview page for simultaneous recall (singalong paradigm)
+
+        if(paradigm_type == "simultaneous_recall") psychTestR::reactive_page(function(state, ...) {
+
+
+                # Grab various variables
+                number_attempts <- psychTestR::get_global("number_attempts", state)
+                max_goes <- psychTestR::get_global("max_goes", state)
+                attempts_left <- psychTestR::get_global("attempts_left", state) - 1L
+                melody_no <- 1L # Keep always one and pop off the item each time
+
+                # We assume the items have been passed through the URL parameter
+                trials <- psychTestR::get_global('rhythmic_melody', state)
+
+                if(is.null(trials) || nrow(trials) == 0) {
+                  trials <- psychTestR::get_global('rhythmic_melody_review', state)
+                }
+
+                melody_row <- trials %>% dplyr::slice(!! melody_no)
+                current_item_id <- melody_row$item_id
+
+                # Convert the row to a DF
+                tb_row <- singpause_item_bank %>%
+                  dplyr::filter(item_id == !! current_item_id)
+
+                audio_file <- tb_row$audio_file
+
+                audio_file_path <- URLdecode(paste0('assets/audio/', audio_file))
+
+                # For now we fix this, but it will probably become dynamic later
+                total_no_melodies <- 1L
+
+                page_text <- shiny::tags$div(
+                  shiny::tags$p("Höre dir zuerst die Melodie an, bevor du sie zurücksingst."),
+                          page_text)
+
+                stimulus_preview_page(audio_file_path,
+                                       page_title = "Vorschau",
+                                       page_text,
+                                       audio_file,
+                                       attempts_left,
+                                       max_goes,
+                                       total_no_melodies,
+                                       melody_no,
+                                       tb_row,
+                                       paradigm_type)
+
+          }) else musicassessr::empty_code_block(),
+
+
         psychTestR::reactive_page(function(state, ...) {
 
           # For now we fix this, but it will probably become dynamic later
@@ -124,7 +174,7 @@ reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
             show_progress = FALSE,
             melody_no = melody_no,
             lyrics = tb_row$lyrics,
-            trigger_start_of_stimulus_fun = musicassessr::paradigm(paradigm_type = paradigm_type, stimuli_type = "audio", feedback = TRUE, asynchronous_api_mode = TRUE)$trigger_start_of_stimulus_fun,
+            trigger_start_of_stimulus_fun = musicassessr::paradigm(paradigm_type = paradigm_type, stimuli_type = "audio", feedback = TRUE, asynchronous_api_mode = TRUE, simultaneous_recall_show_stop = TRUE)$trigger_start_of_stimulus_fun,
             trigger_end_of_stimulus_fun = musicassessr::paradigm(paradigm_type = paradigm_type, stimuli_type = "audio", feedback = TRUE, asynchronous_api_mode = TRUE)$trigger_end_of_stimulus_fun,
             feedback = TRUE,
             asynchronous_api_mode = TRUE
@@ -286,7 +336,7 @@ audio_file_melodic_production_page <- function(tb_row,
           total_no_melodies = total_no_melodies,
           melody_no = melody_no,
           lyrics = tb_row$lyrics,
-          trigger_start_of_stimulus_fun = musicassessr::paradigm(paradigm_type = paradigm_type, stimuli_type = "audio", feedback = TRUE, asynchronous_api_mode = TRUE)$trigger_start_of_stimulus_fun,
+          trigger_start_of_stimulus_fun = musicassessr::paradigm(paradigm_type = paradigm_type, stimuli_type = "audio", feedback = TRUE, asynchronous_api_mode = TRUE, simultaneous_recall_show_stop = TRUE)$trigger_start_of_stimulus_fun,
           trigger_end_of_stimulus_fun = musicassessr::paradigm(paradigm_type = paradigm_type, stimuli_type = "audio", feedback = TRUE, asynchronous_api_mode = TRUE)$trigger_end_of_stimulus_fun,
           feedback = TRUE,
           asynchronous_api_mode = TRUE
