@@ -200,8 +200,9 @@
             item_bank_id: item_bank_id,
             job_id: job_id,
         };
+
         try {
-            const response = fetch(url, {
+            const response = await fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -213,7 +214,8 @@
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
         } catch (error) {
-            return;
+            console.log(error);
+            
         }
     };
 
@@ -255,7 +257,7 @@
             } else {
                 job_id = uuidv4();
 
-                appendNewReviewItems(
+               await appendNewReviewItems(
                     userId,
                     extraParam.item_ids,
                     extraParam.item_bank_id,
