@@ -1,7 +1,7 @@
 Package: songbird
 Type: Package
 Title: The SongBird app
-Version: 1.2.0
+Version: 1.2.1
 Author: Seb Silas
 Maintainer: Seb Silas <sebsilas@gmail.com>
 Description: An app for managing the SongBird application.
