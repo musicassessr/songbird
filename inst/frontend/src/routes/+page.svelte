@@ -121,7 +121,7 @@
             aria-live="polite"
         >
             <div id="prelogin">
-                <p class="logged_out_message2">
+                <p class="logged_out_message2" style="margin-right: 20px;">
                     {@html $translations["welcome2"]}
                 </p>
             </div>
