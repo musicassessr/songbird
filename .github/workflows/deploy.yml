@@ -119,3 +119,32 @@ jobs:
         run: STAGE=dev yarn deploy
       - name: invalidate cloudfront cache
         run: aws cloudfront create-invalidation --distribution-id ${{ vars.CF_DIST_DEV_ID }} --paths "/*"
+          
+  deploy-prod:
+      needs: changes
+      runs-on: ubuntu-latest
+      env:
+        AWS_REGION : "eu-central-1"
+        PROD_ENV_FILE : ${{ secrets.PROD_ENV_FILE }}
+      if: ${{ github.ref == 'refs/heads/prod' && needs.changes.outputs.frontend == 'true' }}
+      defaults:
+        run:
+          working-directory: ./inst/frontend
+      steps:
+        - name: Git clone the repository
+          uses: actions/checkout@v4
+        - name: Install dependenecies and configure env file
+          uses: actions/setup-node@v4
+        - run: yarn install
+        - run : yarn add serverless@3.x
+        - run: echo "$PROD_ENV_FILE" | base64 -d > .env.prod
+        - name: configure aws credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            role-to-assume: ${{ secrets.GH_PRDO_ROLE }}
+            role-session-name: prod_role
+            aws-region: ${{ env.AWS_REGION }}
+        - name: BUILD && DEPLOY ON PROD
+          run: STAGE=prod yarn deploy
+        - name: invalidate cloudfront cache
+          run: aws cloudfront create-invalidation --distribution-id ${{ vars.CF_DIST_PROD_ID }} --paths "/*"
