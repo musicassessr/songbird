@@ -1003,3 +1003,15 @@
         </div>
     </div>
 </div>
+
+<style>
+
+.singbpause-table h3 {
+    margin-left: 10px; 
+    margin-right: 10px; 
+    text-align: center;
+    font-size: 20px;
+}
+
+
+</style>
