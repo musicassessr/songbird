@@ -1,3 +1,5 @@
+# songbird 1.3.0
+
 # songbird 1.2.1
 
 - Fixed Safari bug
