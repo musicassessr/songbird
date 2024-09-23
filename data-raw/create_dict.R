@@ -6,7 +6,7 @@
 library(tidyverse)
 library(readxl)
 
-setwd('~/singpause')
+setwd('~/songbird')
 
 
 singpause_dict_df <- readxl::read_excel("data-raw/input/musicassessr_dict_sabeth_neue_version.xlsx",

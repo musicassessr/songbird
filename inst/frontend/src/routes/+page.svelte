@@ -102,6 +102,11 @@
                     form.reset();
                     return;
                 }
+                if (error?.message.includes("Invalid username format.")) {
+                    toast.error("Invalid username format.");
+                    form.reset();
+                    return;
+                }
                 toast.error(error.message);
             } else {
                 console.log("Unknown error during sign up:", error);
@@ -121,7 +126,7 @@
             aria-live="polite"
         >
             <div id="prelogin">
-                <p class="logged_out_message2">
+                <p class="logged_out_message2" style="margin-right: 20px;">
                     {@html $translations["welcome2"]}
                 </p>
             </div>
