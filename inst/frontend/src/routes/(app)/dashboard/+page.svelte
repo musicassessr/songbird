@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "../../app.css";
+    import "../../../app.css";
     import { goto } from "$app/navigation";
     import { signOut, deleteUser } from "aws-amplify/auth";
     import toast, { Toaster } from "svelte-french-toast";
@@ -337,10 +337,10 @@
                 </div>
             </div>
             <br />
-            <p class="logged_in_message">
+            <!-- <p class="logged_in_message">
                 {@html $translations["welcome1"]}
             </p>
-            <br />
+            <br /> -->
             <div class="tabbable">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <!-- svelte-ignore a11y-no-static-element-interactions -->

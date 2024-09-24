@@ -1,12 +1,15 @@
 import type { PageLoad } from './$types';
 import { getCurrentUser, fetchUserAttributes, fetchAuthSession } from '@aws-amplify/auth';
 import "$lib/Cognito";
-import { error, redirect } from '@sveltejs/kit';
 import toast, { Toaster } from "svelte-french-toast";
-import { invalidate, invalidateAll } from '$app/navigation';
+import { loadTranslations } from "$lib/stores/store";
 
 
-export const load = (async () => {
+export const load = (async ({url}) => {
+
+
+    let lang = url.searchParams.get('language') ?? "de";
+    loadTranslations(lang)
 
     try {
         const session = await getCurrentUser();

@@ -62,6 +62,9 @@ resources:
           - AttributeDataType: "String"
             Name: groupId
             Required: false
+          - AttributeDataType: "String"
+            Name: isAdmin
+            Required: false
     UserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       DeletionPolicy: Retain

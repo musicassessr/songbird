@@ -6,25 +6,5 @@
 
 </script>
 
-<header>
-<a href="https://{appConfig["subdomain"]} ">
-        <div id="header_title">
-            <img src="{songbird_logo}">
-        </div>
-    </a>
-</header>
+
 <slot></slot>
-<div class="df-layout">
-
-<footer>
-    <div id="footer_message">
-
-        <p>
-            {$translations["help_contact"]}
-      
-            <a href="mailto:sebsilas@gmail.com">sebsilas@gmail.com</a>
-          </p>
-        
-    </div>
-</footer>
-</div>
