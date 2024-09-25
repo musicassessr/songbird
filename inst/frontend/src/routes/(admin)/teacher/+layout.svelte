@@ -3,11 +3,11 @@
     import songbird_logo from "$lib/assets/songbird_logo.png";
     import appConfig from "$lib/app-config.yaml";
     import { translations , loadTranslations} from "$lib/stores/store";
-
+    const SONGBIRD_APP_URL=  import.meta.env.VITE_APP_SONGBIRD_URL ?? appConfig["subdomain"];
 </script>
 
 <header>
-<a href="https://{appConfig["subdomain"]}/teacher">
+<a href="{SONGBIRD_APP_URL}/teacher">
         <div id="header_title">
             <img src="{songbird_logo}">
         </div>
