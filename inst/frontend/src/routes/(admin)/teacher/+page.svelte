@@ -41,6 +41,7 @@
         ].map((userSession, index) => ({
             id: index,
             user_id: userSession.user_id,
+            username: userSession.username,
             sessions: userSession[`${currentView}_no_practice_sessions`],
         }));
 
@@ -253,7 +254,7 @@
                                         style="color: inherit;"
                                         href={`/teacher/user-stats/${row.user_id}`}
                                     >
-                                        {row.user_id}
+                                        {row.username}
                                     </a></td
                                 >
                                 <td>{row.sessions}</td>
