@@ -22,10 +22,16 @@
 
         <p>
             {$translations["help_contact"]}
-      
-            <a href="mailto:sebsilas@gmail.com">sebsilas@gmail.com</a>
-          </p>
-        
+
+            <a href="mailto:songbirdtrainingapp@gmail.com">songbirdtrainingapp@gmail.com</a>.
+
+            {$translations["Give"]}
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSehKWo83CHUVrLvJq_pdHtmqMzgV9_i1V2n2EE-0g_jfBuxyg/viewform?usp=sf_link">
+              {$translations["here"]}
+            </a>
+            {$translations["feedback"]}
+        </p>
+
     </div>
 </footer>
 </div>
