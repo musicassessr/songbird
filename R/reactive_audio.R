@@ -3,7 +3,7 @@
 
 reactive_audio_file_melodic_production_page <- function(max_goes = 3L,
                                                         paradigm_type = c("call_and_response", "simultaneous_recall"),
-                                                        page_title = if(paradigm_type == "simultaneous_recall") psychTestR::i18n("sing_along_page_title_da") else psychTestR::i18n("sing_back_message_da"),
+                                                        page_title = if(paradigm_type == "simultaneous_recall") psychTestR::i18n("sing_along_page_title_without_da") else psychTestR::i18n("sing_back_message_without_da"),
                                                         page_text = shiny::tags$div(shiny::tags$img(id = "singImage", src = "https://musicassessr.com/assets/img/singing.png", height = 100, width = 100))
                                                         ) {
 
