@@ -35,5 +35,8 @@
     "last_month_you_practiced": "Im letzten Monat hast du {totalTimeSpent} über {totalPracticeSessions} Übungseinheiten geübt. Gut gemacht!",
     "last_week_you_practiced": "In der letzten Woche hast du {totalTimeSpent} über {totalPracticeSessions} Übungseinheiten geübt. Gut gemacht!",
     "hours": "Stunden",
-    "minutes": "Minuten"
+    "minutes": "Minuten",
+    "Give": "Gib",
+    "here": "hier",
+    "feedback": "Feedback"
 }
