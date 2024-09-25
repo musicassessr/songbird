@@ -80,6 +80,7 @@
         const url = `${API_BASE_URL}/get-trial-and-session-data`;
         const payload = {
             group_id: 5,
+            filter_pseudo_anonymous_ids : true
         };
 
         try {

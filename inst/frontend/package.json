@@ -12,7 +12,7 @@
     "deploy": "yarn build && sls client deploy --stage dev --no-confirm --region $AWS_REGION",
     "deploy:prod": "yarn build && sls client deploy --stage prod --no-confirm --region $AWS_REGION",
     "deploy:infra": "yarn build && sls deploy --stage ${STAGE:=dev}",
-    "deploy:cognito": " cd serverless/src/cognito && yarn build  && cd - && yarn setstage sls deploy --config serverless-cognito.yaml --stage ${STAGE:=dev}"
+    "deploy:cognito": " cd serverless/src/cognito && yarn build  && cd - && yarn setstage sls deploy --config serverless-cognito.yaml --stage ${STAGE:=dev} --region eu-central-1"
   },
   "devDependencies": {
     "@modyfi/vite-plugin-yaml": "^1.1.0",
