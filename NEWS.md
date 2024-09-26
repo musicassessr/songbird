@@ -1,3 +1,11 @@
+# songbird 1.4.1
+
+- Update translation
+
+# songbird 1.4.0
+
+- Launch SongBird for Böblingen testing!
+
 # songbird 1.3.0
 
 # songbird 1.2.1
