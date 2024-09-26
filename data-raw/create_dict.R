@@ -37,7 +37,6 @@ singpause_dict <- psychTestR::i18n_dict$new(singpause_dict_df)
 
 
 
-
 # Internal
 usethis::use_data(singpause_dict, overwrite = TRUE, internal = TRUE)
 
