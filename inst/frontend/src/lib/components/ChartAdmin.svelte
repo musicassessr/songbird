@@ -203,6 +203,7 @@
 </script>
 
 <td
+    style="        cursor: pointer;"
     on:click={() => {
         showModal = true;
         populateChartsv2();
