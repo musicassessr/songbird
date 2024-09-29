@@ -4,7 +4,6 @@
     import { onMount } from "svelte";
     import Chart from "chart.js/auto";
     import { translations, loadTranslations } from "$lib/stores/store";
-    import { ConsoleLogger } from "aws-amplify/utils";
 
     export let userData;
     export let reviewMelodies = [];
@@ -129,7 +128,6 @@
         if (rhythmicChart) {
             rhythmicChart.destroy();
         }
-        console.log(sessionScoresRhythmic);
         const labelsRhythmic = sessionScoresRhythmic.map((el) => el.Date);
         const rhythmicScores = sessionScoresRhythmic.map((el) => el.score * 10);
 
@@ -175,10 +173,6 @@
         const reviewScores = melodyReviewDataFiltered.map(
             (el) => el.score * 10,
         );
-
-        console.log("reviewDates", reviewDates);
-        console.log("reviewScores", reviewScores);
-
         if (reviewDates.length == 0 || reviewScores.length == 0) {
             loader = false;
             document.getElementById(
@@ -206,7 +200,6 @@
     const populateChartsv2 = async () => {
         if (reviewMelodies.length > 0 || sessionScoresRhythmic.length > 0) {
             await sleep(10);
-            console.log(reviewMelodies);
             populateCharts();
             populateDropdown(reviewMelodies);
             loader = false;
