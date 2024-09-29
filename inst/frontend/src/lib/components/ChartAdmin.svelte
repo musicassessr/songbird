@@ -94,6 +94,12 @@
     };
 
     const populateDropdown = (melodyReviewData) => {
+        if (melodyReviewData.length == 0) {
+            document.getElementById(
+                "reviewMelodiesChartWrapper",
+            ).style.display = "none";
+            return;
+        }
         const dropdown = document.getElementById("melodyReviewDropdown");
 
         dropdown.innerHTML = "";
@@ -124,6 +130,7 @@
         }
         const labelsRhythmic = sessionScoresRhythmic.map((el) => el.Date);
         const rhythmicScores = sessionScoresRhythmic.map((el) => el.score * 10);
+
         if (labelsRhythmic.length == 0 || rhythmicScores.length == 0) {
             loader = false;
             document.getElementById("rhythmicChartWrapper").style.display =
@@ -166,7 +173,6 @@
         const reviewScores = melodyReviewDataFiltered.map(
             (el) => el.score * 10,
         );
-
         if (reviewDates.length == 0 || reviewScores.length == 0) {
             loader = false;
             document.getElementById(
@@ -196,6 +202,7 @@
             await sleep(10);
             populateCharts();
             populateDropdown(reviewMelodies);
+            loader = false;
         } else {
             hasData = false;
         }
