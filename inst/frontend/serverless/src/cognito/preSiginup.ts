@@ -13,11 +13,11 @@ const sql = postgres({
 export const handler = async (event) => {
     const username = event.userName;
 
-    const usernameRegex = /^[0-9]{6}[A-Z]{2}[0-9]{2}(_[0-9]+)?$/;
+    // const usernameRegex = /^[0-9]{6}[A-Z]{2}[0-9]{2}(_[0-9]+)?$/;
 
-    if (!usernameRegex.test(username)) {
-        throw new Error("Invalid username format");
-    }
+    // if (!usernameRegex.test(username)) {
+    //     throw new Error("Invalid username format");
+    // }
 
     const result = await sql`select * from users where username = ${username}`;
 
