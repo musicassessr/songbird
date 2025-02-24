@@ -1,6 +1,6 @@
 # songbird 1.5.0
 
-- Add questionnaire generator for pre-/post-test 
+- Add questionnaire generator for pre-/post-test questionnaires
 
 # songbird 1.4.1
 
