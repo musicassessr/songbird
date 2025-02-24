@@ -3,6 +3,16 @@
 # create_questionnaire_app(type = "parents", pre_post = "pre")
 # create_questionnaire_app(type = "teachers", pre_post = "pre")
 
+#' Create questionnaire app
+#'
+#' @param force_p_id_from_url
+#' @param type
+#' @param pre_post
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 create_questionnaire_app <- function(force_p_id_from_url = FALSE,
                                      type = c("kids", "parents", "teachers"),
                                      pre_post = c("pre", "post")) {
@@ -31,8 +41,8 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
     # post test TLs...
   }
 
-  make_test(
-    opt = test_options(
+  psychTestR::make_test(
+    opt = psychTestR::test_options(
       title = "SingPause",
       admin_password = "ilikecheesepie432",
       researcher_email = "sebsilas@gmail.com",
@@ -40,9 +50,7 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
       force_p_id_from_url = force_p_id_from_url
     ),
 
-    elts = join(tl,
-                final_page("Dankeschön!")
-                )
+    elts = psychTestR::join(tl, psychTestR::final_page("Dankeschön!"))
 
   )
 }
