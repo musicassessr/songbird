@@ -169,6 +169,11 @@ db_con <- musicassessrdb::musicassessr_con()
 dbWriteTable(db_con, name = 'item_bank_singpause_2024_item', value = singpause_item_item_bank, row.names = FALSE, append = FALSE, overwrite = TRUE)
 dbWriteTable(db_con, name = 'item_bank_singpause_2024_phrase', value = singpause_phrase_item_bank, row.names = FALSE, append = FALSE, overwrite = TRUE)
 
+db_con <- musicassessrdb::musicassessr_con()
+
+tbl(db_con, "item_bank_singpause_2024_phrase") %>%
+  select(phrase_name) %>%
+  collect()
 
 DBI::dbDisconnect(db_con)
 

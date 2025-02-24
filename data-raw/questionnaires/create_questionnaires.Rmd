@@ -1,0 +1,253 @@
+
+
+```{r}
+
+library(tidyverse)
+library(psychTestR)
+library(shiny)
+
+
+```
+
+
+```{r}
+
+
+
+```
+
+
+
+
+```{r}
+
+likert_fragen <- c("Stimme überhaupt nicht zu",
+                   "Stimme eher nicht zu",
+                   "Stimme eher zu",
+                   "Stimme voll und ganz zu")
+
+likert_fragen2 <- c("Stimmt gar nicht", 
+                    "Stimmt eher nicht", 
+                    "Stimmt eher", "Stimmt genau")
+
+likert_fragen3 <- c("Trifft überhaupt nicht zu", "Trifft kaum zu", "Trifft eher Nicht zu", "Teils-teils", "Trifft eher zu", "Trifft sehr zu", "Trifft voll zu")
+
+
+
+```
+
+
+```{r}
+
+create_timeline <- function(type = c("kids", "teachers", "parents"),
+                            pre_post = c("pre", "post")) {
+  
+  
+  if(type == "kids"){
+    
+    items <- readxl::read_excel('Instrumente_2025-02-22_Seb.xlsx',
+                                     sheet = "Items_Kinder",
+                                   skip = 1)  %>% 
+    slice(9:67) %>% 
+    fill(Einsatz) %>% 
+    fill(Instruktion)
+    
+  }
+  
+  if(type == "parents") {
+    
+    items <- readxl::read_excel('Instrumente_2025-02-22_Seb.xlsx',
+                                     sheet = "Items_Eltern",
+                                   skip = 1)  %>% 
+    slice(68:142) %>% 
+      fill(Einsatz) %>% 
+      fill(Domäne) %>%
+      fill(Instruktion) %>% 
+      filter(Domäne != "BIG 5 Persönlichkeit")
+    
+  }
+  
+  
+  if(type == "teachers"){
+    
+    items <- readxl::read_excel('Instrumente_2025-02-22_Seb.xlsx',
+                                     sheet = "Items_Singleiter",
+                                   skip = 1) %>% 
+    
+    slice(33:101) %>% 
+      fill(Einsatz) %>% 
+      fill(Instruktion)
+    
+  }
+  
+  # Normalise columns across idiosyncracies
+  if(type %in% c("kids", "parents")) {
+    items <- items %>% 
+      mutate(`Benennung Item` = NA)
+  } else {
+    items$`Priorisierung: EFT-C` <- NULL
+  }
+  
+  # Filter based on test type
+  if(pre_post == "pre") {
+    items <- items %>% 
+      dplyr::filter(Einsatz != "nur Post-Test")
+  }
+  
+  if(pre_post == "post") {
+    items <- items %>% 
+      dplyr::filter(Einsatz != "nur Prä-Test")
+  }
+  
+  # Construct timeline
+
+    
+  tl <- pmap_dfr(items, function(Domäne, Konstrukt, Quelle, Einsatz, 
+                                  Fragetext, Instruktion, 
+                                  Antwortformat, Antwortskala, Items,
+                                 `Benennung Item`) {
+  
+    
+    if(is.na(Antwortskala)) {
+      return(NULL)
+      
+    } else if(Antwortskala == "Mehrfachnennung") {
+      
+      choices <- str_split_1(Items, ";") %>% 
+        gsub("[^[:alpha:] ]", "", .)
+      
+      p <- psychTestR::checkbox_page(label = gsub("[^[:alnum:]]", "", Konstrukt),
+                                     prompt = Instruktion,
+                                     choices = choices)
+    
+    } else if(Antwortskala == "TextInput") {
+      
+      p <- psychTestR::text_input_page(label = gsub("[^[:alnum:]]", "", Konstrukt),
+                                        prompt = shiny::tags$div(
+                                                  if(!is.na(Instruktion)) shiny::tags$p(shiny::tags$strong(Instruktion)),
+                                                  shiny::tags$p(Items)
+                                                  ),
+                                       one_line = FALSE)
+      
+    } else if(grepl(";", Antwortskala)) {
+      
+      choices <- str_split_1(Antwortskala, ";") %>% 
+        gsub("[^[:alpha:] ]", "", .)
+      
+      p <- psychTestR::NAFC_page(label = gsub("[^[:alnum:]]", "", Konstrukt),
+                                   prompt = shiny::tags$div(
+                                                  if(!is.na(Instruktion)) shiny::tags$p(shiny::tags$strong(Instruktion)),
+                                                  shiny::tags$p(Items)
+                                                  ),
+                                   choices = choices)
+      
+    } else if(Antwortskala %in% 
+      c("4stufige Likert-Skala", 
+        '4stufige Likert-Skala von "stimme gar nicht zu" bis "stimme voll zu"'))
+      {
+      
+        p <- psychTestR::NAFC_page(label = gsub("[^[:alnum:]]", "", Konstrukt),
+                                   prompt = shiny::tags$div(
+                                                  if(!is.na(Instruktion)) shiny::tags$p(shiny::tags$strong(Instruktion)),
+                                                  shiny::tags$p(Items)
+                                                  ),
+                                   choices = likert_fragen)
+        
+    } else if(Antwortskala == "4stufig „stimmt gar nicht“ - „stimmt genau“"){
+      
+        p <- psychTestR::NAFC_page(label = gsub("[^[:alnum:]]", "", Konstrukt),
+                                   prompt = shiny::tags$div(
+                                                  if(!is.na(Instruktion)) shiny::tags$p(shiny::tags$strong(Instruktion)),
+                                                  shiny::tags$p(Items)
+                                                  ),
+                                   choices = likert_fragen2)
+        
+    } else if(Antwortskala == "7stufige Likert-Skala"){
+      
+        p <- psychTestR::NAFC_page(label = gsub("[^[:alnum:]]", "", Konstrukt),
+                                   prompt = shiny::tags$div(
+                                                  if(!is.na(Instruktion)) shiny::tags$p(shiny::tags$strong(Instruktion)),
+                                                  shiny::tags$p(Items)
+                                                  ),
+                                   choices = likert_fragen3)
+        
+    } else {
+      return(NULL)
+    }
+    
+    Konstrukt <- str_replace_all(Konstrukt, "ü", "u") %>% 
+      str_replace_all("ä", "a") %>% 
+      str_replace("Ü", "U") %>% 
+      str_replace("ö", "o")
+    
+    return(tibble::tibble(module = gsub("[^[:alpha:]]", "", Konstrukt), 
+                          page = list(p)))
+    
+  }) %>% 
+    tidyr::fill(module) %>% 
+    group_by(module) %>% 
+    mutate(no_in_module = row_number()) %>% 
+    ungroup() %>% 
+    pmap_dfr(function(module, page, no_in_module) {
+      
+      page@label <- paste0(module, "_", no_in_module)
+     
+      tibble(
+        module = module,
+        page = list(page)
+      )
+    })
+  
+  
+  
+  modules <- tl$module %>% unique()
+  
+  
+  tl <- map(modules, function(module) {
+      pages <- tl %>% 
+        dplyr::filter(module == !! module)
+      
+      pages_unlisted <- unlist(pages$page)
+      
+      psychTestR::module(label = module,
+                         pages_unlisted)
+  }) %>% 
+    unlist()
+
+  
+}
+
+teachers_tl_pretest <- create_timeline(type = "teachers", pre_post = "pre")
+
+
+```
+
+```{r}
+
+kids_tl_pretest <- create_timeline(type = "kids", pre_post = "pre")
+parents_tl_pretest <- create_timeline(type = "parents", pre_post = "pre")
+teachers_tl_pretest <- create_timeline(type = "teachers", pre_post = "pre")
+
+
+use_data(kids_tl_pretest, 
+         parents_tl_pretest, 
+         teachers_tl_pretest, 
+         overwrite = TRUE)
+
+```
+
+
+```{r}
+
+
+# kids_tl_posttest <- create_timeline(type = "kids", pre_post = "post")
+# teachers_tl_posttest <- create_timeline(type = "teachers", pre_post = "post")
+# parents_tl_posttest <- create_timeline(type = "parents", pre_post = "post")
+
+
+```
+
+
+
+
+
