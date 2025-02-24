@@ -5,8 +5,8 @@
     import { goto, invalidateAll } from "$app/navigation";
     import "$lib/Cognito";
     import toast, { Toaster } from "svelte-french-toast";
-    import appConfig from "$lib/app-config.yaml";
     let res;
+    let chartData;
     let groupsStats;
     let currentView = "overall"; // This will control which res set to show
     let userSessionsDataHandler;
@@ -22,14 +22,15 @@
     let showModal = false;
     let signUpData = {};
     let form: any;
-    import { translations , loadTranslations} from "$lib/stores/store";
     import songbird_icon from "$lib/assets/songbird_icon.png";
+    import Chart from "$lib/components/ChartAdmin.svelte";
+    import { translations, loadTranslations } from "$lib/stores/store";
 
-
-
+    const filterByUserId = (data, userId) => {
+        return data.filter((item) => item.user_id === userId);
+    };
 
     const validateEmail = (email) => {
-        // Regular expression to validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
@@ -80,7 +81,7 @@
         const url = `${API_BASE_URL}/get-trial-and-session-data`;
         const payload = {
             group_id: 5,
-            filter_pseudo_anonymous_ids : true
+            filter_pseudo_anonymous_ids: true,
         };
 
         try {
@@ -194,6 +195,7 @@
         if (data.session?.isAdmin) {
             groupsStats = await getGroupStats();
             res = groupsStats?.group_stats;
+            chartData = groupsStats;
             updateDataHandlers();
         }
     });
@@ -251,13 +253,22 @@
                         {#each $userSessionsRows as row}
                             <tr>
                                 <td>
-                                    <a
-                                        style="color: inherit;"
-                                        href={`/teacher/user-stats/${row.user_id}`}
-                                    >
-                                        {row.username}
-                                    </a></td
-                                >
+                                    <Chart
+                                        sessionScoresRhythmic={filterByUserId(
+                                            chartData?.session_scores_rhythmic,
+                                            row.user_id,
+                                        )}
+                                        reviewMelodies={filterByUserId(
+                                            chartData?.review_melodies,
+                                            row.user_id,
+                                        )}
+                                        userData={filterByUserId(
+                                            chartData?.user_stats,
+                                            row.user_id,
+                                        )}
+                                        username={row.username}
+                                    />
+                                </td>
                                 <td>{row.sessions}</td>
                             </tr>
                         {/each}
@@ -309,143 +320,143 @@
         {/if}
     </div>
 {:else}
-<div class="wrapper">
-    <div
-        id="dynamic_ui"
-        class="shiny-html-output shiny-bound-output"
-        aria-live="polite"
-    >
-        <div id="prelogin">
-            <p class="logged_out_message2" style="margin-right: 20px;">
-                {@html $translations["welcome2"]}
-            </p>
-        </div>
-        <br />
-        <form
-            id="sign-sign_in_section"
-            method="POST"
-            on:submit|preventDefault={handleSubmit}
+    <div class="wrapper">
+        <div
+            id="dynamic_ui"
+            class="shiny-html-output shiny-bound-output"
+            aria-live="polite"
         >
-            <div class="content-title">
-                {$translations["sign_in"]}
+            <div id="prelogin">
+                <p class="logged_out_message2" style="margin-right: 20px;">
+                    {@html $translations["welcome2"]}
+                </p>
             </div>
-            <div class="form-group shiny-input-container">
-                <label
-                    class="control-label shiny-label-null"
-                    for="sign-sign_in_user"
-                    id="sign-sign_in_user-label"
-                ></label>
-                <input
-                    id="sign-sign_in_user"
-                    type="text"
-                    name="email"
-                    class="shiny-input-text form-control shiny-bound-input"
-                    value=""
-                    placeholder={$translations["username"]}
-                />
-            </div>
-            <div class="form-group shiny-input-container">
-                <label
-                    class="control-label shiny-label-null"
-                    for="sign-sign_in_password"
-                    id="sign-sign_in_password-label"
-                ></label>
-                <input
-                    id="sign-sign_in_password"
-                    name="password"
-                    type="password"
-                    class="shiny-input-password form-control shiny-bound-input"
-                    value=""
-                    placeholder={$translations["password"]}
-                />
-            </div>
-            <button
-                class="btn btn-default action-button shiny-bound-input"
-                id="sign-sign_in_button"
-                type="button submit">{$translations["sign_in"]}</button
+            <br />
+            <form
+                id="sign-sign_in_section"
+                method="POST"
+                on:submit|preventDefault={handleSubmit}
             >
-        </form>
-        <div class="vr-separator">
-            <div class="vr-line"></div>
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <img src={songbird_icon} />
-            <div class="vr-line"></div>
+                <div class="content-title">
+                    {$translations["sign_in"]}
+                </div>
+                <div class="form-group shiny-input-container">
+                    <label
+                        class="control-label shiny-label-null"
+                        for="sign-sign_in_user"
+                        id="sign-sign_in_user-label"
+                    ></label>
+                    <input
+                        id="sign-sign_in_user"
+                        type="text"
+                        name="email"
+                        class="shiny-input-text form-control shiny-bound-input"
+                        value=""
+                        placeholder={$translations["username"]}
+                    />
+                </div>
+                <div class="form-group shiny-input-container">
+                    <label
+                        class="control-label shiny-label-null"
+                        for="sign-sign_in_password"
+                        id="sign-sign_in_password-label"
+                    ></label>
+                    <input
+                        id="sign-sign_in_password"
+                        name="password"
+                        type="password"
+                        class="shiny-input-password form-control shiny-bound-input"
+                        value=""
+                        placeholder={$translations["password"]}
+                    />
+                </div>
+                <button
+                    class="btn btn-default action-button shiny-bound-input"
+                    id="sign-sign_in_button"
+                    type="button submit">{$translations["sign_in"]}</button
+                >
+            </form>
+            <div class="vr-separator">
+                <div class="vr-line"></div>
+                <!-- svelte-ignore a11y-missing-attribute -->
+                <img src={songbird_icon} />
+                <div class="vr-line"></div>
+            </div>
+            <form
+                id="sign_up_section"
+                method="POST"
+                bind:this={form}
+                on:submit|preventDefault={handleSignUpButtonClick}
+            >
+                <div class="content-title-alt">{$translations["sign_up"]}</div>
+                <div class="form-group shiny-input-container">
+                    <label
+                        class="control-label shiny-label-null"
+                        for="sign-sign_up_user"
+                        id="sign-sign_up_user-label"
+                    ></label>
+                    <input
+                        id="sign-sign_up_user"
+                        type="text"
+                        class="shiny-input-text form-control shiny-bound-input"
+                        name="username"
+                        value=""
+                        placeholder={$translations["username_sign_up"]}
+                    />
+                </div>
+                <div class="form-group shiny-input-container">
+                    <label
+                        class="control-label shiny-label-null"
+                        for="sign-sign_in_email"
+                        id="sign-sign_in_email-label"
+                    ></label>
+                    <input
+                        id="sign-sign_in_email"
+                        name="email"
+                        type="text"
+                        class="shiny-input-email form-control shiny-bound-input"
+                        value=""
+                        placeholder={$translations["email_sign_up"]}
+                    />
+                </div>
+                <div class="form-group shiny-input-container">
+                    <label
+                        class="control-label shiny-label-null"
+                        for="sign-sign_up_password"
+                        id="sign-sign_up_password-label"
+                    ></label>
+                    <input
+                        id="sign-sign_up_password"
+                        type="password"
+                        name="password"
+                        class="shiny-input-password form-control shiny-bound-input"
+                        value=""
+                        placeholder={$translations["password_sign_up"]}
+                    />
+                </div>
+                <div class="form-group shiny-input-container">
+                    <label
+                        class="control-label shiny-label-null"
+                        for="sign-sign_up_verify_password"
+                        id="sign-sign_up_verify_password-label"
+                    ></label>
+                    <input
+                        id="sign-sign_up_verify_password"
+                        type="password"
+                        name="confirm_password"
+                        class="shiny-input-password form-control shiny-bound-input"
+                        value=""
+                        placeholder={$translations["verify_password_sign_up"]}
+                    />
+                </div>
+                <button
+                    class="btn btn-default action-button btn_alt shiny-bound-input"
+                    id="sign-sign_up_button"
+                    type="button submit">{$translations["sign_up"]}</button
+                >
+            </form>
         </div>
-        <form
-            id="sign_up_section"
-            method="POST"
-            bind:this={form}
-            on:submit|preventDefault={handleSignUpButtonClick}
-        >
-            <div class="content-title-alt">{$translations["sign_up"]}</div>
-            <div class="form-group shiny-input-container">
-                <label
-                    class="control-label shiny-label-null"
-                    for="sign-sign_up_user"
-                    id="sign-sign_up_user-label"
-                ></label>
-                <input
-                    id="sign-sign_up_user"
-                    type="text"
-                    class="shiny-input-text form-control shiny-bound-input"
-                    name="username"
-                    value=""
-                    placeholder={$translations["username_sign_up"]}
-                />
-            </div>
-            <div class="form-group shiny-input-container">
-                <label
-                    class="control-label shiny-label-null"
-                    for="sign-sign_in_email"
-                    id="sign-sign_in_email-label"
-                ></label>
-                <input
-                    id="sign-sign_in_email"
-                    name="email"
-                    type="text"
-                    class="shiny-input-email form-control shiny-bound-input"
-                    value=""
-                    placeholder={$translations["email_sign_up"]}
-                />
-            </div>
-            <div class="form-group shiny-input-container">
-                <label
-                    class="control-label shiny-label-null"
-                    for="sign-sign_up_password"
-                    id="sign-sign_up_password-label"
-                ></label>
-                <input
-                    id="sign-sign_up_password"
-                    type="password"
-                    name="password"
-                    class="shiny-input-password form-control shiny-bound-input"
-                    value=""
-                    placeholder={$translations["password_sign_up"]}
-                />
-            </div>
-            <div class="form-group shiny-input-container">
-                <label
-                    class="control-label shiny-label-null"
-                    for="sign-sign_up_verify_password"
-                    id="sign-sign_up_verify_password-label"
-                ></label>
-                <input
-                    id="sign-sign_up_verify_password"
-                    type="password"
-                    name="confirm_password"
-                    class="shiny-input-password form-control shiny-bound-input"
-                    value=""
-                    placeholder={$translations["verify_password_sign_up"]}
-                />
-            </div>
-            <button
-                class="btn btn-default action-button btn_alt shiny-bound-input"
-                id="sign-sign_up_button"
-                type="button submit">{$translations["sign_up"]}</button
-            >
-        </form>
     </div>
-</div>
 {/if}
 
 <style>
