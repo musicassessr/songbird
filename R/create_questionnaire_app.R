@@ -13,6 +13,7 @@
 #' @param force_p_id_from_url
 #' @param type
 #' @param pre_post
+#' @param img_dir
 #'
 #' @returns
 #' @export
@@ -20,11 +21,12 @@
 #' @examples
 create_questionnaire_app <- function(force_p_id_from_url = FALSE,
                                      type = c("kids", "parents", "teachers"),
-                                     pre_post = c("pre", "post")) {
+                                     pre_post = c("pre", "post"),
+                                     img_dir = system.file("data-raw/questionnaires/www/img", package = "songbird")) {
 
   shiny::addResourcePath(
     prefix = "img", # custom prefix that will be used to reference your directory
-    directoryPath = system.file("data-raw/questionnaires/www/img", package = "songbird") # path to resource in your package
+    directoryPath = img_dir # path to resource in your package
   )
 
   type <- match.arg(type)
