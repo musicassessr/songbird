@@ -73,6 +73,8 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
                               psychTestR::set_global("singpause_user_id", url_params$user_id, state)
                               psychTestR::set_global("singpause_username", url_params$username, state)
 
+                              psychTestR::one_button_page("Herzlich Willkommen.")
+
                             }),
 
                             # Main timeline
@@ -88,10 +90,14 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
                               session_info <- psychTestR::get_session_info(state, complete = FALSE)
                               psychTestR_session_id <- session_info$p_id
 
-                              append_singpause_survey_completion_api(user_id = singpause_user_id,
+                              logging::loginfo("singpause_user_id: %s", singpause_user_id)
+                              logging::loginfo("singpause_id: %s", singpause_id)
+                              logging::loginfo("psychTestR_session_id: %s", psychTestR_session_id)
+
+                              musicassessrdb::append_singpause_survey_completion_api(user_id = singpause_user_id,
                                                                      singpause_id = singpause_id, # Same as username in users
                                                                      psychTestR_id = psychTestR_session_id,
-                                                                     type = type)
+                                                                     type = paste0(pre_post, "test"))
 
                             }),
 
