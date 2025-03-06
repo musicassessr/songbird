@@ -94,10 +94,12 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
                               logging::loginfo("singpause_id: %s", singpause_id)
                               logging::loginfo("psychTestR_session_id: %s", psychTestR_session_id)
 
-                              musicassessrdb::append_singpause_survey_completion_api(user_id = singpause_user_id,
-                                                                     singpause_id = singpause_id, # Same as username in users
-                                                                     psychTestR_id = psychTestR_session_id,
-                                                                     type = paste0(pre_post, "test"))
+                              if(length(singpause_user_id) > 0L && length(singpause_id) > 0L && length(psychTestR_session_id) > 0L) {
+                                musicassessrdb::append_singpause_survey_completion_api(user_id = singpause_user_id,
+                                                                                       singpause_id = singpause_id, # Same as username in users
+                                                                                       psychTestR_id = psychTestR_session_id,
+                                                                                       type = paste0(pre_post, "test"))
+                              }
 
                             }),
 
