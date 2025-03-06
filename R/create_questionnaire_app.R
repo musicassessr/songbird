@@ -63,7 +63,39 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
       enable_admin_panel = FALSE
     ),
 
-    elts = psychTestR::join(tl, psychTestR::final_page("Dankeschön!"))
+    elts = psychTestR::join(
+
+                            # Grab URL parameters
+
+                            psychTestR::reactive_page(function(state, ...) {
+
+                              url_params <- psychTestR::get_url_params(state)
+                              psychTestR::set_global("singpause_user_id", url_params$user_id, state)
+                              psychTestR::set_global("singpause_username", url_params$username, state)
+
+                            }),
+
+                            # Main timeline
+                            tl,
+
+                            # Append entry completion
+
+                            psychTestR::code_block(function(state, ...) {
+
+                              singpause_user_id <- psychTestR::get_global("singpause_user_id", state)
+                              singpause_id <- psychTestR::get_global("singpause_username", state)
+
+                              session_info <- psychTestR::get_session_info(state, complete = FALSE)
+                              psychTestR_session_id <- session_info$p_id
+
+                              append_singpause_survey_completion_api(user_id = singpause_user_id,
+                                                                     singpause_id = singpause_id, # Same as username in users
+                                                                     psychTestR_id = psychTestR_session_id,
+                                                                     type = type)
+
+                            }),
+
+                            psychTestR::final_page("Dankeschön!"))
 
   )
 }
