@@ -1,7 +1,12 @@
 
+#  devtools::install_github('musicassessr/songbird', ref = 'devel')
+
 # create_questionnaire_app(type = "kids", pre_post = "pre")
 # create_questionnaire_app(type = "parents", pre_post = "pre")
 # create_questionnaire_app(type = "teachers", pre_post = "pre")
+
+
+
 
 #' Create questionnaire app
 #'
@@ -16,6 +21,11 @@
 create_questionnaire_app <- function(force_p_id_from_url = FALSE,
                                      type = c("kids", "parents", "teachers"),
                                      pre_post = c("pre", "post")) {
+
+  shiny::addResourcePath(
+    prefix = "img", # custom prefix that will be used to reference your directory
+    directoryPath = system.file("data-raw/questionnaires/www/img", package = "songbird") # path to resource in your package
+  )
 
   type <- match.arg(type)
   pre_post <- match.arg(pre_post)
@@ -47,7 +57,8 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
       admin_password = "ilikecheesepie432",
       researcher_email = "sebsilas@gmail.com",
       allow_any_p_id_url = TRUE,
-      force_p_id_from_url = force_p_id_from_url
+      force_p_id_from_url = force_p_id_from_url,
+      enable_admin_panel = FALSE
     ),
 
     elts = psychTestR::join(tl, psychTestR::final_page("Dankeschön!"))

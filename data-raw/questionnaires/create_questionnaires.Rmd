@@ -10,14 +10,6 @@ library(shiny)
 ```
 
 
-```{r}
-
-
-
-```
-
-
-
 
 ```{r}
 
@@ -50,7 +42,9 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
                                    skip = 1)  %>% 
     slice(9:67) %>% 
     fill(Einsatz) %>% 
-    fill(Instruktion)
+    fill(Konstrukt) %>% 
+    filter(Konstrukt != "Aktuelle Musikalische Aktivitäten") 
+    # We use the psyquest implementation
     
   }
   
@@ -62,8 +56,7 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
     slice(68:142) %>% 
       fill(Einsatz) %>% 
       fill(Domäne) %>%
-      fill(Instruktion) %>% 
-      filter(Domäne != "BIG 5 Persönlichkeit")
+      filter(Domäne != "BIG 5 Persönlichkeit") # psyquest instead
     
   }
   
@@ -75,8 +68,7 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
                                    skip = 1) %>% 
     
     slice(33:101) %>% 
-      fill(Einsatz) %>% 
-      fill(Instruktion)
+      fill(Einsatz)
     
   }
   
@@ -147,9 +139,41 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
       {
       
         p <- psychTestR::NAFC_page(label = gsub("[^[:alnum:]]", "", Konstrukt),
+                                   arrange_vertically = FALSE,
                                    prompt = shiny::tags$div(
                                                   if(!is.na(Instruktion)) shiny::tags$p(shiny::tags$strong(Instruktion)),
-                                                  shiny::tags$p(Items)
+                                                  shiny::tags$p(Items),
+                                                  
+                                      shiny::tags$script(htmltools::HTML('
+                                      console.log(typeof buttonMappings);
+  if(typeof buttonMappings === "undefined") {
+  console.log("boom!");
+    const buttonMappings = [
+    { id: "Stimme überhaupt nicht zu", image: "img/rating_1.png" },
+    { id: "Stimme eher nicht zu", image: "img/rating_2.png" },
+    { id: "Stimme eher zu", image: "img/rating_3.png" },
+    { id: "Stimme voll und ganz zu", image: "img/rating_4.png" }
+  ];
+    buttonMappings.forEach(({ id, image }) => {
+    let button = document.getElementById(id);
+    if (button) {
+      let img = document.createElement("img");
+      img.src = image;
+      img.alt = button.innerText;
+      img.style.cursor = "pointer";
+      img.style.width = "50px"; // Set width
+      img.style.height = "50px"; // Set height
+      img.onclick = function () {
+        trigger_button(id);
+      };
+      
+      let parent = button.parentNode;
+      parent.insertBefore(img, button);
+      parent.removeChild(button);
+    }
+  });
+  }
+  '))            
                                                   ),
                                    choices = likert_fragen)
         
@@ -209,6 +233,10 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
       
       pages_unlisted <- unlist(pages$page)
       
+      # pages_unlisted <- psychTestR::randomise_at_run_time(
+      #   label = paste0(module, "_order"),
+      #   logic = pages_unlisted)
+      
       psychTestR::module(label = module,
                          pages_unlisted)
   }) %>% 
@@ -216,8 +244,6 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
 
   
 }
-
-teachers_tl_pretest <- create_timeline(type = "teachers", pre_post = "pre")
 
 
 ```
@@ -236,6 +262,25 @@ use_data(kids_tl_pretest,
 
 ```
 
+
+Other questionnaires:
+
+kids:
+
+```{r}
+
+psyquest::CCM()
+
+```
+
+
+parents:
+
+```{r}
+
+psyquest::TPI()
+
+```
 
 ```{r}
 
