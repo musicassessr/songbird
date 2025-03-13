@@ -103,7 +103,24 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
 
                             }),
 
-                            psychTestR::final_page("Dankeschön!"))
+                            psychTestR::reactive_page(function(state, ...) {
+
+                              url_params <- psychTestR::get_url_params(state)
+
+                              if(url_params$dev_vs_prod == "dev") {
+                                url <- "https://singpause.dev.songbird.training"
+                              } else {
+                                url <- "https://singpause.songbird.training"
+                              }
+
+                              musicassessr::redirect_page(text = "Dankeschön!",
+                                                          url = url,
+                                                          ms = 5000)
+
+                            })
+
+
+                            )
 
   )
 }

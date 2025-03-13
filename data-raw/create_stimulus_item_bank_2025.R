@@ -34,13 +34,26 @@ read_lyrics <- function(f, remove_extra_chars = FALSE) {
 
 # Phrases
 
+# debug(itembankr::midi_file_to_notes_and_durations)
+
+# debug(tuneR::readMidi)
+
 create_item_bank(name = "singpause_2025_phrase",
                  input = "files_phrases",
                  output = 'item',
                  midi_file_dir = "~/songbird/inst/stimuli_2025/midi_phrases")
 
+create_item_bank(name = "singpause_2025_item",
+                 input = "files_phrases",
+                 output = 'item',
+                 midi_file_dir = "~/songbird/inst/stimuli_2025/midi")
+
+
 file.rename(from = 'singpause_2025_phrase_file.rda', to = '~/songbird/data-raw/singpause_2025_phrase_file.rda')
 file.rename(from = 'singpause_2025_phrase_item.rda', to = '~/songbird/data-raw/singpause_2025_phrase_item.rda')
+
+file.rename(from = 'singpause_2025_item_file.rda', to = '~/songbird/data-raw/singpause_2025_item_file.rda')
+file.rename(from = 'singpause_2025_item_item.rda', to = '~/songbird/data-raw/singpause_2025_item_item.rda')
 
 
 load('data-raw/singpause_2025_phrase_item.rda')
@@ -49,12 +62,28 @@ singpause_phrase_item_bank <- item_bank
 rm(item_bank)
 
 
+load('data-raw/singpause_2025_item_item.rda')
+singpause_item_item_bank <- item_bank
+
+rm(item_bank)
+
 
 
 singpause_phrase_item_bank <- singpause_phrase_item_bank %>%
   dplyr::as_tibble() %>%
   mutate(
     rhythmic_difficulty = singpause_phrase_item_bank %>%
+      tibble::as_tibble() %>%
+      dplyr::mutate(log_freq = 0) %>%
+      Berkowitz::predict_rhythmic_difficulty()
+
+  )
+
+
+singpause_item_item_bank <- singpause_item_item_bank %>%
+  dplyr::as_tibble() %>%
+  mutate(
+    rhythmic_difficulty = singpause_item_item_bank %>%
       tibble::as_tibble() %>%
       dplyr::mutate(log_freq = 0) %>%
       Berkowitz::predict_rhythmic_difficulty()
@@ -79,12 +108,18 @@ singpause_phrase_item_bank <- singpause_phrase_item_bank %>%
   dplyr::left_join(singpause_2025_metadata, by = "midi_file")
 
 
+singpause_item_item_bank <- singpause_item_item_bank %>%
+  mutate(midi_file = stringi::stri_trans_nfc(midi_file)) %>%
+  dplyr::left_join(singpause_2025_metadata, by = "midi_file")
+
+
 
 
 # Sort the item banks
 singpause_phrase_item_bank <- singpause_phrase_item_bank %>%
   sort_singpause_2025() %>%
   mutate(item_id = str_remove(item_id, "_item_"))
+
 
 
 # Add lyrics
@@ -109,26 +144,16 @@ singpause_phrase_item_bank_2025 <- singpause_phrase_item_bank %>%
 rm(singpause_phrase_item_bank)
 
 
+singpause_item_item_bank_2025 <- singpause_item_item_bank
 
 use_data(singpause_phrase_item_bank_2025,
+         singpause_item_item_bank_2025,
          overwrite = TRUE)
 
 
 library(DBI)
 
 # Create a (dummy) item item bank
-
-singpause_item_item_bank_2025 <- singpause_phrase_item_bank_2025 %>%
-  select(song_name, image) %>%
-  unique() %>%
-  mutate(
-    item_type = "item",
-    item_id = paste0("singpause_2025_item_", row_number()),
-    audio_file = NA_character_,
-    lyrics_file = NA_character_,
-    abs_melody = NA_character_,
-    durations = NA_character_
-  )
 
 
 # Dev
