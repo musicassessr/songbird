@@ -113,9 +113,9 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
                                 url <- "https://singpause.songbird.training"
                               }
 
-                              musicassessr::redirect_page(text = "Dankeschön!",
+                              musicassessr::redirect_page(text = "Dankeschön! Wir leiten dich jetzt weiter.",
                                                           url = url,
-                                                          ms = 5000)
+                                                          ms = 2000)
 
                             })
 
