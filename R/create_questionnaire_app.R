@@ -58,9 +58,15 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
       title = "SingPause",
       admin_password = "ilikecheesepie432",
       researcher_email = "sebsilas@gmail.com",
+      logo = "https://musicassessr.com/assets/songbird_logo.png",
+      logo_height = "70px",
+      logo_width = "190px",
+      logo_position = "left",
       allow_any_p_id_url = TRUE,
       force_p_id_from_url = force_p_id_from_url,
-      enable_admin_panel = FALSE
+      enable_admin_panel = FALSE,
+      display = psychTestR::display_options(css = c("https://musicassessr.com/assets/css/style_songbird.css",
+                                                    system.file('www/css/musicassessr.css', package = 'musicassessr') ) )
     ),
 
     elts = psychTestR::join(
@@ -73,7 +79,7 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
                               psychTestR::set_global("singpause_user_id", url_params$user_id, state)
                               psychTestR::set_global("singpause_username", url_params$username, state)
 
-                              psychTestR::one_button_page("Herzlich Willkommen.")
+                              psychTestR::one_button_page("Herzlich Willkommen.", button_text = "Weiter")
 
                             }),
 
@@ -107,7 +113,7 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
 
                               url_params <- psychTestR::get_url_params(state)
 
-                              if(url_params$dev_vs_prod == "dev") {
+                              if(length(url_params$dev_vs_prod) == 0L || url_params$dev_vs_prod == "dev") {
                                 url <- "https://singpause.dev.songbird.training"
                               } else {
                                 url <- "https://singpause.songbird.training"
