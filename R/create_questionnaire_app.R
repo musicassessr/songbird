@@ -41,22 +41,6 @@ create_questionnaire_app <- function(tl,
     pre_post %in% c("pre", "post")
   )
 
-  # if(pre_post == "pre") {
-  #
-  #   if(type == "kids") {
-  #     tl <- kids_tl_pretest
-  #   }
-  #   if(type == "parents") {
-  #     tl <- parents_tl_pretest
-  #   }
-  #   if(type == "teachers") {
-  #     tl <- teachers_tl_pretest
-  #   }
-  #
-  # } else {
-  #   # post test TLs...
-  # }
-
   if(!is.null(extra_materials)) {
     tl <- psychTestR::join(
       extra_materials,
