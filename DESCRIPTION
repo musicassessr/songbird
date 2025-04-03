@@ -16,9 +16,19 @@ Depends:
 Imports: 
     magrittr,
     musicassessr,
-    SAA (>= 2.4.0),
-    musicassessrdb
+    SAA (>= 2.7.1),
+    musicassessrdb,
+    psyquest (>= 1.5.13),
+    mdt (>= 2.8.2),
+    mpt (>= 0.14.0),
+    RAT (>= 0.1.6),
+    JAJ (>= 0.1.7)
 Remotes: 
     sebsilas/SAA,
     sebsilas/musicassessr,
-    sebsilas/musicassessrdb
+    sebsilas/musicassessrdb,
+    klausfrieler/psyquest,
+    pmcharrison/mdt,
+    pmcharrison/mpt,
+    klausfrieler/RAT,
+    klausfrieler/JAJ
