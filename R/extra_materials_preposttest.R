@@ -13,7 +13,8 @@ SAA_plus <- function() {
       shiny::tags$div(
         turn_on_upload_to_s3_mode(TRUE),
         shiny::tags$p("Jetzt wirst du zu einem Gesangstest übergehen.")
-      )
+      ),
+      button_text = "Weiter"
     ),
 
     SAA::SAA(
@@ -68,7 +69,7 @@ extra_materials_parents <- function() {
           "Achtung: Bitte beantworten Sie die folgenden Fragen im Namen Ihres Kindes."
         )
       )
-    )),
+    ), button_text = "Weiter"),
 
     psyquest::TPI()
 
