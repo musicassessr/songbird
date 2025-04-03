@@ -13,7 +13,8 @@ kids_tl_pretest <- create_timeline(type = "kids", pre_post = "pre")
 #parents_tl_pretest <- create_timeline(type = "parents", pre_post = "pre")
 #teachers_tl_pretest <- create_timeline(type = "teachers", pre_post = "pre")
 
-create_questionnaire_app(type = "kids",
+create_questionnaire_app(tl = kids_tl_pretest,
+                         type = "kids",
                          pre_post = "pre",
                          extra_materials = extra_materials_kids() )
 

@@ -10,6 +10,7 @@
 
 #' Create questionnaire app
 #'
+#' @param tl
 #' @param force_p_id_from_url
 #' @param type
 #' @param pre_post
@@ -20,7 +21,8 @@
 #' @export
 #'
 #' @examples
-create_questionnaire_app <- function(force_p_id_from_url = FALSE,
+create_questionnaire_app <- function(tl,
+                                     force_p_id_from_url = FALSE,
                                      type = c("kids", "parents", "teachers"),
                                      pre_post = c("pre", "post"),
                                      img_dir = system.file("data-raw/questionnaires/www/img", package = "songbird"),
@@ -39,21 +41,21 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
     pre_post %in% c("pre", "post")
   )
 
-  if(pre_post == "pre") {
-
-    if(type == "kids") {
-      tl <- kids_tl_pretest
-    }
-    if(type == "parents") {
-      tl <- parents_tl_pretest
-    }
-    if(type == "teachers") {
-      tl <- teachers_tl_pretest
-    }
-
-  } else {
-    # post test TLs...
-  }
+  # if(pre_post == "pre") {
+  #
+  #   if(type == "kids") {
+  #     tl <- kids_tl_pretest
+  #   }
+  #   if(type == "parents") {
+  #     tl <- parents_tl_pretest
+  #   }
+  #   if(type == "teachers") {
+  #     tl <- teachers_tl_pretest
+  #   }
+  #
+  # } else {
+  #   # post test TLs...
+  # }
 
   if(!is.null(extra_materials)) {
     tl <- psychTestR::join(
