@@ -8,11 +8,12 @@ create_questionnaire_app(
   force_p_id_from_url = FALSE,
   type = c("kids", "parents", "teachers"),
   pre_post = c("pre", "post"),
-  img_dir = system.file("data-raw/questionnaires/www/img", package = "songbird")
+  img_dir = system.file("data-raw/questionnaires/www/img", package = "songbird"),
+  extra_materials = NULL
 )
 }
 \arguments{
-\item{img_dir}{}
+\item{extra_materials}{}
 }
 \description{
 Create questionnaire app

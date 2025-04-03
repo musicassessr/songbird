@@ -11,8 +11,6 @@ load_all()
 
 ```
 
-
-
 ```{r}
 
 likert_fragen <- c("Stimme überhaupt nicht zu",
@@ -250,7 +248,9 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
       page = list(p)
     ))
     
-  }) %>%
+  }) 
+  
+  tl <- tl %>%
     tidyr::fill(module) %>%
     group_by(module) %>%
     mutate(no_in_module = row_number()) %>%
@@ -259,6 +259,7 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
                       module_start,
                       page,
                       no_in_module) {
+      
       logging::loginfo('module %s', module)
       
       page@label <- paste0(module, "_", no_in_module)
@@ -300,7 +301,8 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
     
     psychTestR::module(label = module, pages_unlisted)
   }) %>%
-    unlist()
+    unlist() %>% 
+    psychTestR::new_timeline(default_lang = "de")
   
   
 }
@@ -323,27 +325,6 @@ use_data(kids_tl_pretest,
 ```
 
 
-<!-- 
-Other questionnaires:
-
-kids:
-
-```{r}
-
-psyquest::CCM()
-
-```
-
-
-parents:
-
-```{r}
-
-psyquest::TPI()
-
-```
-
--->
 
 ```{r}
 

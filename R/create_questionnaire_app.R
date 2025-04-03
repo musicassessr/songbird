@@ -79,7 +79,7 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
                               psychTestR::set_global("singpause_user_id", url_params$user_id, state)
                               psychTestR::set_global("singpause_username", url_params$username, state)
 
-                              psychTestR::one_button_page("Herzlich Willkommen.", button_text = "Weiter")
+                              psychTestR::one_button_page('Liebe Schülerin, lieber Schüler, im Folgendem werden wir Dir einige kurze Frage stellen. Beantworte sie einfach ganz spontan und so wie Du Dich gerade fühlst. Es gibt kein Richtig oder Falsch. Klicke bitte auf "Weiter" um zu beginnen.', button_text = "Weiter")
 
                             }),
 
@@ -119,7 +119,7 @@ create_questionnaire_app <- function(force_p_id_from_url = FALSE,
                                 url <- "https://singpause.songbird.training"
                               }
 
-                              musicassessr::redirect_page(text = "Dankeschön! Wir leiten dich jetzt weiter.",
+                              musicassessr::redirect_page(text = "Vielen Dank für deine Teilnahme! Du wirst jetzt zur App weitergeleitet.",
                                                           url = url,
                                                           ms = 2000)
 
