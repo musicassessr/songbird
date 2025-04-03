@@ -53,10 +53,10 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
     items <- readxl::read_excel( system.file('extdata/Instrumente_2025-02-22_Seb_final.xlsx', package = 'songbird') ,
                                 sheet = "Items_Kinder",
                                 skip = 1)  %>%
-      slice(1:2, 7:64) %>%
-      fill(Einsatz) %>%
-      fill(Konstrukt) %>%
-      filter(Konstrukt != "Aktuelle Musikalische Aktivitäten")
+      dplyr::slice(1:2, 7:64) %>%
+      dplyr::fill(Einsatz) %>%
+      dplyr::fill(Konstrukt) %>%
+      dplyr::filter(Konstrukt != "Aktuelle Musikalische Aktivitäten")
     # We use the psyquest implementation
 
   }
@@ -66,10 +66,10 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
     items <- readxl::read_excel( system.file('extdata/Instrumente_2025-02-22_Seb_final.xlsx', package = 'songbird'),
                                 sheet = "Items_Eltern",
                                 skip = 1)  %>%
-      slice(1:78) %>%
-      fill(Einsatz) %>%
-      fill(Domäne) %>%
-      filter(Domäne != "BIG 5 Persönlichkeit") # psyquest instead
+      dplyr::slice(1:78) %>%
+      dplyr::fill(Einsatz) %>%
+      dplyr::fill(Domäne) %>%
+      dplyr::filter(Domäne != "BIG 5 Persönlichkeit") # psyquest instead
 
   }
 
@@ -80,15 +80,15 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
                                 sheet = "Items_Singleiter",
                                 skip = 1) %>%
 
-      slice(1:58) %>%
-      fill(Einsatz)
+      dplyr::slice(1:58) %>%
+      dplyr::fill(Einsatz)
 
   }
 
   # Normalise columns across idiosyncracies
   if (type %in% c("kids", "parents")) {
     items <- items %>%
-      mutate(`Benennung Item` = NA)
+      dplyr::mutate(`Benennung Item` = NA)
   } else {
     items$`Priorisierung: EFT-C` <- NULL
   }
@@ -106,7 +106,7 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
 
   # Construct timeline
 
-  tl <- pmap_dfr(items, function(Domäne,
+  tl <- purrr::pmap_dfr(items, function(Domäne,
                                  Konstrukt,
                                  Quelle,
                                  Einsatz,
@@ -121,7 +121,7 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
 
     } else if (length(Antwortformat) > 0L &&
                !is.na.scalar(Antwortformat) && Antwortformat %in% c("Dropdown", "DropdownOther")) {
-      choices <- str_split_1(Antwortskala, ";")
+      choices <- stringr::str_split_1(Antwortskala, ";")
 
       p <- psychTestR::dropdown_page(
         label = gsub("[^[:alnum:]]", "", Konstrukt),
@@ -135,7 +135,7 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
 
     } else if (Antwortskala == "Mehrfachnennung") {
 
-      choices <- str_split_1(Items, ";") %>%
+      choices <- stringr::str_split_1(Items, ";") %>%
         gsub("[^[:alpha:] ]", "", .)
 
       p <- psychTestR::checkbox_page(
@@ -158,7 +158,7 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
       )
 
     } else if (grepl(";", Antwortskala)) {
-      choices <- str_split_1(Antwortskala, ";") %>%
+      choices <- stringr::str_split_1(Antwortskala, ";") %>%
         gsub("[^[:alpha:] ]", "", .)
 
       p <- psychTestR::NAFC_page(
@@ -218,10 +218,10 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
       return(NULL)
     }
 
-    Konstrukt <- str_replace_all(Konstrukt, "ü", "u") %>%
-      str_replace_all("ä", "a") %>%
-      str_replace("Ü", "U") %>%
-      str_replace("ö", "o")
+    Konstrukt <- stringr::str_replace_all(Konstrukt, "ü", "u") %>%
+      stringr::str_replace_all("ä", "a") %>%
+      stringr::str_replace("Ü", "U") %>%
+      stringr::str_replace("ö", "o")
 
     return(tibble::tibble(
       module = gsub("[^[:alpha:]]", "", Konstrukt),
@@ -233,10 +233,10 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
 
   tl <- tl %>%
     tidyr::fill(module) %>%
-    group_by(module) %>%
-    mutate(no_in_module = row_number()) %>%
-    ungroup() %>%
-    pmap_dfr(function(module,
+    dplyr::group_by(module) %>%
+    dplyr::mutate(no_in_module = dplyr::row_number()) %>%
+    dplyr::ungroup() %>%
+    purrr::pmap_dfr(function(module,
                       module_start,
                       page,
                       no_in_module) {
@@ -245,9 +245,9 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
 
       page@label <- paste0(module, "_", no_in_module)
 
-      tibble(module = module,
-             page = list(page),
-             module_start = module_start)
+      tibble::tibble(module = module,
+                     page = list(page),
+                     module_start = module_start)
     })
 
 
@@ -255,7 +255,7 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
   modules <- tl$module %>% unique()
 
 
-  tl <- map(modules, function(module) {
+  tl <- purrr::map(modules, function(module) {
     pages <- tl %>%
       dplyr::filter(module == !!module)
 
