@@ -37,7 +37,8 @@ SAA_plus <- function() {
   )
 }
 
-extra_materials_kids <- psychTestR::randomise_at_run_time(
+extra_materials_kids <- function() {
+  psychTestR::randomise_at_run_time(
   label = "randomised_order",
   list(
 
@@ -54,20 +55,23 @@ extra_materials_kids <- psychTestR::randomise_at_run_time(
     JAJ::JAJ(num_items = 2L)
 
   )
-)
+  )
+}
 
 
-extra_materials_parents <- psychTestR::join(
+extra_materials_parents <- function() {
+  psychTestR::join(
 
-  psychTestR::one_button_page(shiny::tags$div(
-    shiny::tags$p(
-      shiny::tags$strong(
-        "Achtung: Bitte beantworten Sie die folgenden Fragen im Namen Ihres Kindes."
+    psychTestR::one_button_page(shiny::tags$div(
+      shiny::tags$p(
+        shiny::tags$strong(
+          "Achtung: Bitte beantworten Sie die folgenden Fragen im Namen Ihres Kindes."
+        )
       )
-    )
-  )),
+    )),
 
-  psyquest::TPI()
+    psyquest::TPI()
 
-)
+  )
+}
 
