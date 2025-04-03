@@ -54,8 +54,8 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
                                 sheet = "Items_Kinder",
                                 skip = 1)  %>%
       dplyr::slice(1:2, 7:64) %>%
-      dplyr::fill(Einsatz) %>%
-      dplyr::fill(Konstrukt) %>%
+      tidyr::fill(Einsatz) %>%
+      tidyr::fill(Konstrukt) %>%
       dplyr::filter(Konstrukt != "Aktuelle Musikalische Aktivitäten")
     # We use the psyquest implementation
 
@@ -67,8 +67,8 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
                                 sheet = "Items_Eltern",
                                 skip = 1)  %>%
       dplyr::slice(1:78) %>%
-      dplyr::fill(Einsatz) %>%
-      dplyr::fill(Domäne) %>%
+      tidyr::fill(Einsatz) %>%
+      tidyr::fill(Domäne) %>%
       dplyr::filter(Domäne != "BIG 5 Persönlichkeit") # psyquest instead
 
   }
@@ -81,7 +81,7 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
                                 skip = 1) %>%
 
       dplyr::slice(1:58) %>%
-      dplyr::fill(Einsatz)
+      tidyr::fill(Einsatz)
 
   }
 
