@@ -48,6 +48,15 @@ btn_script_4FC <- shiny::tags$script(
   )
 )
 
+#' Create timeline
+#'
+#' @param type
+#' @param pre_post
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 create_timeline <- function(type = c("kids", "teachers", "parents"),
                             pre_post = c("pre", "post")) {
   if (type == "kids") {
