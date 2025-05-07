@@ -20,7 +20,9 @@ SAA_plus <- function() {
     SAA::SAA(
       skip_setup = "except_microphone",
       app_name = "singpause-pretest-questionnaire-kids",
-      # num_items = list(e
+      demographics = FALSE,
+      gold_msi = FALSE,
+      # num_items = list(
       #   "long_tones" = 6L,
       #   "arrhythmic" = 8L,
       #   "rhythmic" = 8L
@@ -33,30 +35,38 @@ SAA_plus <- function() {
         "rhythmic" = 2L
       ),
       asynchronous_api_mode = TRUE,
+      use_presigned_url = FALSE,
       user_id = 147L # PRETEST: melody_dev: 147L, melody_prod: 186L;;; POSTTEST: melody_dev: 148L, melody_prod: 187L
     )
   )
 }
 
-extra_materials_kids <- function() {
-  psychTestR::randomise_at_run_time(
-  label = "randomised_order",
-  list(
+extra_materials_kids <- function(production = FALSE) {
 
-    #psyquest::CCM(),
+    tl <- list(
 
-    SAA_plus()#,
+      #psyquest::CCM(),
 
-    # mdt::mdt(num_items = 2L),
-    #
-    # mpt::mpt(num_items = 2L),
-    #
-    # RAT::RAT(num_items = 2L),
-    #
-    # JAJ::JAJ(num_items = 2L)
+      SAA_plus()#,
+#
+#       mdt::mdt(num_items = 2L),
+#
+#       mpt::mpt(num_items = 2L),
+#
+#       RAT::RAT(num_items = 2L),
+#
+#       JAJ::JAJ(num_items = 2L)
 
-  )
-  )
+    )
+
+    if(production) {
+      tl <- psychTestR::randomise_at_run_time(
+        label = "randomised_order",
+        tl
+      )
+    }
+
+    return(tl)
 }
 
 
@@ -71,7 +81,7 @@ extra_materials_parents <- function() {
       )
     ), button_text = "Weiter"),
 
-    psyquest::TPI()
+    psyquest::TPI(languages = "de_f")
 
   )
 }
