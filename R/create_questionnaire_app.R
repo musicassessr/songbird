@@ -48,10 +48,24 @@ create_questionnaire_app <- function(tl,
     )
   }
 
+  if(type == "kids") {
+    lang <- "de"
+    welcome_text <- 'Liebe Schülerin, lieber Schüler, im Folgendem werden wir Dir einige kurze Frage stellen. Beantworte sie einfach ganz spontan und so wie Du Dich gerade fühlst. Es gibt kein Richtig oder Falsch. Klicke bitte auf "Weiter", um zu beginnen.'
+    finish_text <- "Vielen Dank für deine Teilnahme! Du wirst jetzt zur App weitergeleitet."
+  } else if(type == "parents") {
+    lang <- "de_f"
+    welcome_text <- 'Liebe Eltern, im Folgendem werden wir Ihnen einige kurze Frage stellen. Beantworten Sie einfach diese ganz spontan und so wie Sie sich gerade fühlen. Es gibt kein Richtig oder Falsch. Klicken Sie bitte auf "Weiter", um zu beginnen.'
+    finish_text <- "Vielen Dank für Ihre Teilnahme! Sie werden jetzt zur App weitergeleitet."
+  } else if(type == "teachers") {
+    lang <- "de_f"
+    welcome_text <- 'Liebe Singleiter:in, im Folgendem werden wir Ihnen einige kurze Frage stellen. Beantworten Sie diese einfach ganz spontan und so wie Sie sich gerade fühlen. Es gibt kein Richtig oder Falsch. Klicken Sie bitte auf "Weiter", um zu beginnen.'
+    finish_text <- "Vielen Dank für Ihre Teilnahme! Sie werden jetzt zur App weitergeleitet."
+  }
+
   musicassessr::make_musicassessr_test(
 
     title = "SingPause",
-    languages = "de",
+    languages = lang,
     admin_password = "ilikecheesepie432",
     researcher_email = NULL, # We can't translate the text
     logo = "https://musicassessr.com/assets/songbird_logo.png",
@@ -63,7 +77,10 @@ create_questionnaire_app <- function(tl,
 
     opt = musicassessr::musicassessr_opt(asynchronous_api_mode = TRUE,
                                          user_id = 147L, # PRETEST: melody_dev: 147L, melody_prod: 186L;;; POSTTEST: melody_dev: 148L, melody_prod: 187L
-                                         setup_pages = FALSE),
+                                         setup_pages = FALSE,
+                                         use_presigned_url = FALSE,
+                                         async_success_msg = "Lasst uns beginnen."
+                                         ),
 
     # Grab URL parameters
     welcome_page = psychTestR::reactive_page(function(state, ...) {
@@ -72,7 +89,7 @@ create_questionnaire_app <- function(tl,
         psychTestR::set_global("singpause_user_id", url_params$user_id, state)
         psychTestR::set_global("singpause_username", url_params$username, state)
 
-        psychTestR::one_button_page('Liebe Schülerin, lieber Schüler, im Folgendem werden wir Dir einige kurze Frage stellen. Beantworte sie einfach ganz spontan und so wie Du Dich gerade fühlst. Es gibt kein Richtig oder Falsch. Klicke bitte auf "Weiter" um zu beginnen.', button_text = "Weiter")
+        psychTestR::one_button_page(welcome_text, button_text = "Weiter")
 
       }),
 
@@ -118,7 +135,7 @@ create_questionnaire_app <- function(tl,
         url <- "https://singpause.songbird.training"
       }
 
-      musicassessr::redirect_page(text = "Vielen Dank für deine Teilnahme! Du wirst jetzt zur App weitergeleitet.",
+      musicassessr::redirect_page(text = finish_text,
                                   url = url,ms = 2000)
 
 

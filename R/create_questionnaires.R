@@ -8,7 +8,8 @@ likert_fragen <- c("Stimme überhaupt nicht zu",
 
 likert_fragen2 <- c("Stimmt gar nicht",
                     "Stimmt eher nicht",
-                    "Stimmt eher", "Stimmt genau")
+                    "Stimmt eher",
+                    "Stimmt genau")
 
 likert_fragen3 <- c("Trifft überhaupt nicht zu", "Trifft kaum zu", "Trifft eher Nicht zu", "Teils-teils", "Trifft eher zu", "Trifft sehr zu", "Trifft voll zu")
 
@@ -115,7 +116,8 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
                                  Antwortformat,
                                  Antwortskala,
                                  Items,
-                                 `Benennung Item`) {
+                                 `Benennung Item`,
+                                 NegativelyCoded) {
     if (is.na(Antwortskala)) {
       return(NULL)
 
@@ -145,7 +147,8 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
         choices = choices
       )
 
-    } else if (grepl("Input", Antwortskala)) {
+    } else if (grepl("TextInput", Antwortskala)) {
+
       p <- psychTestR::text_input_page(
         label = gsub("[^[:alnum:]]", "", Konstrukt),
         prompt = shiny::tags$div(
@@ -254,6 +257,8 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
 
   modules <- tl$module %>% unique()
 
+  lang <- if(type == "kids") "de" else "de_f"
+
 
   tl <- purrr::map(modules, function(module) {
     pages <- tl %>%
@@ -283,7 +288,7 @@ create_timeline <- function(type = c("kids", "teachers", "parents"),
     psychTestR::module(label = module, pages_unlisted)
   }) %>%
     unlist() %>%
-    psychTestR::new_timeline(default_lang = "de")
+    psychTestR::new_timeline(default_lang = lang )
 
 
 }
