@@ -45,17 +45,17 @@ extra_materials_kids <- function(production = FALSE) {
 
     tl <- list(
 
-      #psyquest::CCM(),
+      psyquest::CCM(),
 
-      SAA_plus()#,
-#
-#       mdt::mdt(num_items = 2L),
-#
-#       mpt::mpt(num_items = 2L),
-#
-#       RAT::RAT(num_items = 2L),
-#
-#       JAJ::JAJ(num_items = 2L)
+      SAA_plus(),
+
+      mdt::mdt(num_items = 2L),
+
+      mpt::mpt(num_items = 2L),
+
+      RAT::RAT(num_items = 2L),
+
+      JAJ::JAJ(num_items = 2L)
 
     )
 
