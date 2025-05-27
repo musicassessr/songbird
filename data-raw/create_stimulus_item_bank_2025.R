@@ -38,14 +38,23 @@ read_lyrics <- function(f, remove_extra_chars = FALSE) {
 
 # debug(tuneR::readMidi)
 
+# t <- itembankr::midi_file_to_notes_and_durations("~/songbird/inst/stimuli_2025/midi_phrases/04_Drahtesel_3.mid")
+
+# midi_files <- list.files(path = "~/songbird/inst/stimuli_2025/midi_phrases/", pattern = "\\.midi$|\\.mid$",  full.names = TRUE, ignore.case = TRUE)
+
+
 create_item_bank(name = "singpause_2025_phrase",
                  input = "files_phrases",
                  output = 'item',
+                 remove_redundancy = FALSE,
+                 remove_melodies_with_only_repeated_notes = FALSE,
                  midi_file_dir = "~/songbird/inst/stimuli_2025/midi_phrases")
 
 create_item_bank(name = "singpause_2025_item",
                  input = "files_phrases",
                  output = 'item',
+                 remove_redundancy = FALSE,
+                 remove_melodies_with_only_repeated_notes = FALSE,
                  midi_file_dir = "~/songbird/inst/stimuli_2025/midi")
 
 
@@ -144,7 +153,13 @@ singpause_phrase_item_bank_2025 <- singpause_phrase_item_bank %>%
 rm(singpause_phrase_item_bank)
 
 
-singpause_item_item_bank_2025 <- singpause_item_item_bank
+# Get names right
+singpause_item_item_bank_2025 <- singpause_item_item_bank %>%
+  mutate(item_id = str_replace(item_id, "item_item", "item"))
+
+
+
+
 
 use_data(singpause_phrase_item_bank_2025,
          singpause_item_item_bank_2025,

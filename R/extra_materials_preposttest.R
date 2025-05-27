@@ -18,22 +18,25 @@ SAA_plus <- function() {
     ),
 
     SAA::SAA(
+      arrhythmic_item_bank = songbird::Berkowitz_subset %>% itembankr::set_item_bank_class(),
+      rhythmic_item_bank = songbird::Berkowitz_subset %>% itembankr::set_item_bank_class(),
       skip_setup = "except_microphone",
       app_name = "singpause-pretest-questionnaire-kids",
       demographics = FALSE,
       gold_msi = FALSE,
+      concise_wording = TRUE,
+      num_items = list(
+        "long_tones" = 6L,
+        "arrhythmic" = 5L,
+        "rhythmic" = 5L
+      ),
       # num_items = list(
-      #   "long_tones" = 6L,
-      #   "arrhythmic" = 8L,
-      #   "rhythmic" = 8L
+      #   "long_tones" = 2L,
+      #   "arrhythmic" = 2L,
+      #   "rhythmic" = 2L
       # ),
       default_range = list(bottom_range = 47, top_range = 72, clef = "treble"),
       get_answer_melodic = musicassessr::get_answer_add_trial_and_compute_trial_scores_s3,
-      num_items = list(
-        "long_tones" = 2L,
-        "arrhythmic" = 2L,
-        "rhythmic" = 2L
-      ),
       asynchronous_api_mode = TRUE,
       use_presigned_url = FALSE,
       user_id = 147L # PRETEST: melody_dev: 147L, melody_prod: 186L;;; POSTTEST: melody_dev: 148L, melody_prod: 187L
@@ -45,7 +48,7 @@ extra_materials_kids <- function(production = FALSE) {
 
     tl <- list(
 
-      psyquest::CCM(),
+      # psyquest::CCM(),
 
       SAA_plus(),
 
