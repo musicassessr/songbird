@@ -35,7 +35,7 @@ SAA_plus <- function() {
       #   "arrhythmic" = 2L,
       #   "rhythmic" = 2L
       # ),
-      default_range = list(bottom_range = 47, top_range = 72, clef = "treble"),
+      default_range = list(bottom_range = 62, top_range = 74, clef = "treble"),
       get_answer_melodic = musicassessr::get_answer_add_trial_and_compute_trial_scores_s3,
       asynchronous_api_mode = TRUE,
       use_presigned_url = FALSE,
