@@ -25,6 +25,10 @@ SAA_plus <- function() {
       demographics = FALSE,
       gold_msi = FALSE,
       concise_wording = TRUE,
+      long_tone_paradigm = "call_and_response",
+      volume_meter_on_melody_trials = TRUE,
+      volume_meter_on_melody_trials_type = 'playful',
+      long_tone_length = 3L,
       num_examples = list(
         "long_tones" = 1L,
         "arrhythmic" = 1L,
