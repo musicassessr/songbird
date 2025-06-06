@@ -19,3 +19,5 @@ vite.config.ts.timestamp-*
 .serverless
 dist/
 .svelte-kit
+www/
+node/

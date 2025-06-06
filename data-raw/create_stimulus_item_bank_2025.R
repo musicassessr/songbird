@@ -66,7 +66,16 @@ file.rename(from = 'singpause_2025_item_item.rda', to = '~/songbird/data-raw/sin
 
 
 load('data-raw/singpause_2025_phrase_item.rda')
-singpause_phrase_item_bank <- item_bank
+
+# Make IOIs the durs
+
+singpause_phrase_item_bank <- item_bank %>%
+  as_tibble() %>%
+  mutate(durations2 = durations) %>%
+  rowwise() %>%
+  mutate(durations = paste0(c(diff(itembankr::str_mel_to_vector(onset)), 0.5), collapse = ",") ) %>%
+  ungroup() %>%
+  relocate(durations, durations2)
 
 rm(item_bank)
 
@@ -195,4 +204,5 @@ dbWriteTable(db_con, name = 'item_bank_singpause_2025_item', value = singpause_i
 musicassessrdb::db_disconnect(db_con)
 
 # gamifyr::scp_up('~/songbird/inst/stimuli_2025/image')
+
 

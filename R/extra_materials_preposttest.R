@@ -25,16 +25,16 @@ SAA_plus <- function() {
       demographics = FALSE,
       gold_msi = FALSE,
       concise_wording = TRUE,
+      num_examples = list(
+        "long_tones" = 1L,
+        "arrhythmic" = 1L,
+        "rhythmic" = 0L
+      ),
       num_items = list(
-        "long_tones" = 6L,
+        "long_tones" = 4L,
         "arrhythmic" = 5L,
         "rhythmic" = 5L
       ),
-      # num_items = list(
-      #   "long_tones" = 2L,
-      #   "arrhythmic" = 2L,
-      #   "rhythmic" = 2L
-      # ),
       default_range = list(bottom_range = 62, top_range = 74, clef = "treble"),
       get_answer_melodic = musicassessr::get_answer_add_trial_and_compute_trial_scores_s3,
       asynchronous_api_mode = TRUE,
@@ -48,17 +48,16 @@ extra_materials_kids <- function(production = FALSE) {
 
     tl <- list(
 
-      # psyquest::CCM(),
-
       SAA_plus(),
 
-      mdt::mdt(num_items = 2L),
+      mdt::mdt(num_items = 15L),
 
-      mpt::mpt(num_items = 2L),
+      JAJ::JAJ(num_items = 5L),
 
-      RAT::RAT(num_items = 2L),
+      RAT::RAT(num_items = 8L),
 
-      JAJ::JAJ(num_items = 2L)
+      mpt::mpt(num_items = 15L)
+
 
     )
 
