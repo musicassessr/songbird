@@ -39,6 +39,7 @@ SAA_plus <- function() {
         "arrhythmic" = 5L,
         "rhythmic" = 5L
       ),
+      long_tone_call_and_response_end = "auto",
       default_range = list(bottom_range = 62, top_range = 74, clef = "treble"),
       get_answer_melodic = musicassessr::get_answer_add_trial_and_compute_trial_scores_s3,
       asynchronous_api_mode = TRUE,
