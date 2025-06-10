@@ -16,7 +16,7 @@ create_music_test_app <- function(force_p_id_from_url = FALSE,
 
   tl <- extra_materials_kids()
 
-  welcome_text <- 'Liebe Schülerin, lieber Schüler, im Folgendem werden wir Dir einige kurze Frage stellen. Beantworte sie einfach ganz spontan und so wie Du Dich gerade fühlst. Es gibt kein Richtig oder Falsch. Klicke bitte auf "Weiter", um zu beginnen.'
+  welcome_text <- 'Willkommen zu den Musiktests.'
   finish_text <- "Vielen Dank für deine Teilnahme! Du wirst jetzt zur App weitergeleitet."
 
   musicassessr::make_musicassessr_test(
@@ -53,39 +53,14 @@ create_music_test_app <- function(force_p_id_from_url = FALSE,
     elts = function() {
       psychTestR::join(
 
+        # Append entry completion
+        append_completion(pre_post = "start_pre"),
+
         # Main timeline
         tl,
 
         # Append entry completion
-
-        psychTestR::code_block(function(state, ...) {
-
-          singpause_user_id <- psychTestR::get_global("singpause_user_id", state)
-          singpause_id <- psychTestR::get_global("singpause_username", state)
-
-          url_params <- psychTestR::get_url_params(state)
-
-          if(length(url_params$dev_vs_prod) == 0L || url_params$dev_vs_prod == "dev") {
-            Sys.setenv("ENDPOINT_URL" = Sys.getenv("ENDPOINT_URL_DEV"))
-          } else {
-            url <- "https://singpause.songbird.training"
-          }
-
-          session_info <- psychTestR::get_session_info(state, complete = FALSE)
-          psychTestR_session_id <- session_info$p_id
-
-          logging::loginfo("singpause_user_id: %s", singpause_user_id)
-          logging::loginfo("singpause_id: %s", singpause_id)
-          logging::loginfo("psychTestR_session_id: %s", psychTestR_session_id)
-
-          if(length(singpause_user_id) > 0L && length(singpause_id) > 0L && length(psychTestR_session_id) > 0L) {
-            musicassessrdb::append_singpause_survey_completion_api(user_id = singpause_user_id,
-                                                                   singpause_id = singpause_id, # Same as username in users
-                                                                   psychTestR_id = psychTestR_session_id,
-                                                                   type = paste0(pre_post, "test"))
-          }
-
-        })
+        append_completion(pre_post)
 
       )
     },
@@ -107,4 +82,37 @@ create_music_test_app <- function(force_p_id_from_url = FALSE,
 
   )
 
+}
+
+
+append_completion <- function(pre_post) {
+
+  psychTestR::code_block(function(state, ...) {
+
+    singpause_user_id <- psychTestR::get_global("singpause_user_id", state)
+    singpause_id <- psychTestR::get_global("singpause_username", state)
+
+    url_params <- psychTestR::get_url_params(state)
+
+    if(length(url_params$dev_vs_prod) == 0L || url_params$dev_vs_prod == "dev") {
+      Sys.setenv("ENDPOINT_URL" = Sys.getenv("ENDPOINT_URL_DEV"))
+    } else {
+      url <- "https://singpause.songbird.training"
+    }
+
+    session_info <- psychTestR::get_session_info(state, complete = FALSE)
+    psychTestR_session_id <- session_info$p_id
+
+    logging::loginfo("singpause_user_id: %s", singpause_user_id)
+    logging::loginfo("singpause_id: %s", singpause_id)
+    logging::loginfo("psychTestR_session_id: %s", psychTestR_session_id)
+
+    if(length(singpause_user_id) > 0L && length(singpause_id) > 0L && length(psychTestR_session_id) > 0L) {
+      musicassessrdb::append_singpause_survey_completion_api(user_id = singpause_user_id,
+                                                             singpause_id = singpause_id, # Same as username in users
+                                                             psychTestR_id = psychTestR_session_id,
+                                                             type = paste0(pre_post, "test"))
+    }
+
+  })
 }
