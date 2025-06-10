@@ -3,12 +3,16 @@
 #' Create music test app
 #'
 #' @param force_p_id_from_url
+#' @param pre_post
 #'
 #' @returns
 #' @export
 #'
 #' @examples
-create_music_test_app <- function(force_p_id_from_url = FALSE) {
+create_music_test_app <- function(force_p_id_from_url = FALSE,
+                                  pre_post = c("pre", "post")) {
+
+  pre_post <- match.arg(pre_post)
 
   tl <- extra_materials_kids()
 
