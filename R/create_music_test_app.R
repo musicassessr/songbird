@@ -46,6 +46,10 @@ create_music_test_app <- function(force_p_id_from_url = FALSE,
       psychTestR::set_global("singpause_user_id", url_params$user_id, state)
       psychTestR::set_global("singpause_username", url_params$username, state)
 
+      if(length(url_params$dev_vs_prod) == 0L || url_params$dev_vs_prod == "dev") {
+        Sys.setenv("ENDPOINT_URL" = Sys.getenv("ENDPOINT_URL_DEV"))
+      }
+
       psychTestR::one_button_page(welcome_text, button_text = "Weiter")
 
     }),
@@ -96,8 +100,6 @@ append_completion <- function(pre_post) {
 
     if(length(url_params$dev_vs_prod) == 0L || url_params$dev_vs_prod == "dev") {
       Sys.setenv("ENDPOINT_URL" = Sys.getenv("ENDPOINT_URL_DEV"))
-    } else {
-      url <- "https://singpause.songbird.training"
     }
 
     session_info <- psychTestR::get_session_info(state, complete = FALSE)

@@ -62,6 +62,8 @@ extra_materials_kids <- function(production = FALSE) {
       RAT::RAT(take_training = TRUE,
                num_items = 8L),
 
+      psychTestR::one_button_page("Jetzt kommt der letzte Test. Gleich hast Du es geschafft!"),
+
       mpt::mpt(num_items = 15L)
 
 
