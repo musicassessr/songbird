@@ -26,7 +26,7 @@ SAA_plus <- function() {
       gold_msi = FALSE,
       concise_wording = TRUE,
       long_tone_paradigm = "call_and_response",
-      volume_meter_on_melody_trials = TRUE,
+      volume_meter_on_melody_trials = FALSE,
       volume_meter_on_melody_trials_type = 'playful',
       long_tone_length = 3L,
       num_examples = list(
@@ -59,7 +59,8 @@ extra_materials_kids <- function(production = FALSE) {
 
       JAJ::JAJ(num_items = 5L),
 
-      RAT::RAT(num_items = 8L),
+      RAT::RAT(take_training = TRUE,
+               num_items = 8L),
 
       mpt::mpt(num_items = 15L)
 
