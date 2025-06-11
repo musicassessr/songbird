@@ -12,7 +12,7 @@ SAA_plus <- function() {
     psychTestR::one_button_page(
       shiny::tags$div(
         turn_on_upload_to_s3_mode(TRUE),
-        shiny::tags$p("Jetzt wirst du zu einem Gesangstest übergehen.")
+        shiny::tags$p("Es geht los mit einem Gesangstest.")
       ),
       button_text = "Weiter"
     ),
