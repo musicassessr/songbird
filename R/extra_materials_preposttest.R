@@ -57,10 +57,12 @@ extra_materials_kids <- function(production = FALSE) {
 
       mdt::mdt(num_items = 15L),
 
-      JAJ::JAJ(num_items = 5L),
+      JAJ::JAJ(num_items = 5L,
+               feedback = NULL),
 
       RAT::RAT(take_training = TRUE,
-               num_items = 8L),
+               num_items = 8L,
+               feedback = NULL),
 
       psychTestR::one_button_page("Jetzt kommt der letzte Test. Gleich hast Du es geschafft!"),
 
