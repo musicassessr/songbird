@@ -61,7 +61,8 @@ extra_materials_kids <- function(production = FALSE) {
                num_items = 8L,
                feedback = NULL),
 
-      psychTestR::one_button_page("Jetzt kommt der letzte Test. Gleich hast Du es geschafft!"),
+      psychTestR::one_button_page(body = "Jetzt kommt der letzte Test. Gleich hast Du es geschafft!",
+                                  button_text = "Weiter"),
 
       psychTestR::NAFC_page(label = "do_jaj",
                             prompt = shiny::tags$div(
@@ -70,7 +71,9 @@ extra_materials_kids <- function(production = FALSE) {
                               ), choices = c("Ja, zum Gedächtnistest", "Nein, direkt weiter zur App")),
 
 
-      psychTestR::conditional(function(state, answer, ...) {
+      psychTestR::conditional(function(state, ...) {
+        answer <- psychTestR::answer(state)
+        logging::loginfo("answer: %s", answer)
         answer == "Ja, zum Gedächtnistest"
       },  JAJ::JAJ(num_items = 5L, feedback = NULL) )
 
