@@ -57,26 +57,35 @@ extra_materials_kids <- function(production = FALSE) {
 
       mdt::mdt(num_items = 15L),
 
-      JAJ::JAJ(num_items = 5L,
-               feedback = NULL),
-
       RAT::RAT(take_training = TRUE,
                num_items = 8L,
                feedback = NULL),
 
       psychTestR::one_button_page("Jetzt kommt der letzte Test. Gleich hast Du es geschafft!"),
 
-      mpt::mpt(num_items = 15L)
+      psychTestR::NAFC_page(label = "do_jaj",
+                            prompt = shiny::tags$div(
+                              shiny::tags$p("Bist Du bereit, zum Abschluss noch einen kurzen, kniffligen Gedächtnistest mit Johann und Johanna zu absolvieren? Das wäre toll! Danach hast Du es geschafft!"),
+                              shiny::tags$img(src = "https://www.gold.ac.uk/media/images-by-section/about-us/news/press-office/2022-news-stories/Jack-Jill-960.png")
+                              ), choices = c("Ja, zum Gedächtnistest", "Nein, direkt weiter zur App")),
+
+
+      psychTestR::conditional(function(state, answer, ...) {
+        answer == "Ja, zum Gedächtnistest"
+      },  JAJ::JAJ(num_items = 5L, feedback = NULL) )
+
+
+      #mpt::mpt(num_items = 15L)
 
 
     )
 
-    if(production) {
-      tl <- psychTestR::randomise_at_run_time(
-        label = "randomised_order",
-        tl
-      )
-    }
+    # if(production) {
+    #   tl <- psychTestR::randomise_at_run_time(
+    #     label = "randomised_order",
+    #     tl
+    #   )
+    # }
 
     return(tl)
 }
